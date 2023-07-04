@@ -21,7 +21,7 @@ struct LightAttribute
 StructuredBuffer<LightAttribute> lightAttributes : register(t13);
 StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
 
-
+//2D
 void CalculateLight(in out LightColor pLightColor, float3 position, int idx)
 {
     if (0 == lightAttributes[idx].type)
@@ -44,3 +44,12 @@ void CalculateLight(in out LightColor pLightColor, float3 position, int idx)
         
     }
 }
+
+//3D
+static float3 globalLightPos = float3(0.0f, 0.0f, 0.0f);
+static float3 globalLightDir = float3(1.0f, -1.0f, 1.0f);
+static float3 globalLightColor = float3(1.0f, 1.0f, 1.0f);
+static float3 globalLightAmb = float3(0.15f, 0.15f, 0.15f);
+
+
+

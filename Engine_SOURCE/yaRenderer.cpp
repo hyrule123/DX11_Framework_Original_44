@@ -130,7 +130,7 @@ namespace ya::renderer
 		cirlceMesh->CreateVertexBuffer(circleVtxes.data(), circleVtxes.size());
 		cirlceMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 #pragma endregion
-#pragma region Cube Mesh
+		#pragma region Cube Mesh
 		Vertex arrCube[24] = {};
 
 		//struct Vertex
@@ -284,8 +284,119 @@ namespace ya::renderer
 		Resources::Insert<Mesh>(L"CubeMesh", cubMesh);
 		cubMesh->CreateVertexBuffer(arrCube, 24);
 		cubMesh->CreateIndexBuffer(indexes.data(), indexes.size());
-#pragma endregion
+		#pragma endregion
+		#pragma region Sphere Mesh
+		
+		v = {};
+		fRadius = 0.5f;
+		std::vector<Vertex> sphereVtx;
+	
 
+		// Top
+		v.pos = Vector4(0.0f, fRadius, 0.0f, 1.0f);
+		v.uv = Vector2(0.5f, 0.f);
+		v.color = Vector4(1.f, 1.f, 1.f, 1.f);
+		v.normal = Vector3(0.0f, fRadius, 0.0f);
+		v.normal.Normalize();
+		v.tangent = Vector3(1.f, 0.f, 0.f);
+		v.biNormal = Vector3(0.f, 0.f, 1.f);
+		sphereVtx.push_back(v);
+
+		// Body
+		UINT iStackCount = 40; // °¡·Î ºÐÇÒ °³¼ö
+		UINT iSliceCount = 40; // ¼¼·Î ºÐÇÒ °³¼ö
+
+		float fStackAngle = XM_PI / iStackCount;
+		float fSliceAngle = XM_2PI / iSliceCount;
+
+		float fUVXStep = 1.f / (float)iSliceCount;
+		float fUVYStep = 1.f / (float)iStackCount;
+
+		for (UINT i = 1; i < iStackCount; ++i)
+		{
+			float phi = i * fStackAngle;
+
+			for (UINT j = 0; j <= iSliceCount; ++j)
+			{
+				float theta = j * fSliceAngle;
+
+				v.pos = Vector4(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
+					, fRadius * cosf(i * fStackAngle)
+					, fRadius * sinf(i * fStackAngle) * sinf(j * fSliceAngle), 1.0f);
+				v.uv = Vector2(fUVXStep * j, fUVYStep * i);
+				v.color = Vector4(1.f, 1.f, 1.f, 1.f);
+				v.normal = Vector3(v.pos.x, v.pos.y, v.pos.z);
+				//v.normal.Normalize();
+
+				v.tangent.x = -fRadius * sinf(phi) * sinf(theta);
+				v.tangent.y = 0.f;
+				v.tangent.z = fRadius * sinf(phi) * cosf(theta);
+				v.tangent.Normalize();
+
+				v.tangent.Cross(v.normal, v.biNormal);
+				v.biNormal.Normalize();
+
+				sphereVtx.push_back(v);
+			}
+		}
+
+		// Bottom
+		v.pos = Vector4(0.f, -fRadius, 0.f, 1.0f);
+		v.uv = Vector2(0.5f, 1.f);
+		v.color = Vector4(1.f, 1.f, 1.f, 1.f);
+		v.normal = Vector3(v.pos.x, v.pos.y, v.pos.z);
+		v.normal.Normalize();
+
+		v.tangent = Vector3(1.f, 0.f, 0.f);
+		v.biNormal = Vector3(0.f, 0.f, -1.f);
+		sphereVtx.push_back(v);
+
+		// ÀÎµ¦½º
+		// ºÏ±ØÁ¡
+		indexes.clear();
+		for (UINT i = 0; i < iSliceCount; ++i)
+		{
+			indexes.push_back(0);
+			indexes.push_back(i + 2);
+			indexes.push_back(i + 1);
+		}
+
+		// ¸öÅë
+		for (UINT i = 0; i < iStackCount - 2; ++i)
+		{
+			for (UINT j = 0; j < iSliceCount; ++j)
+			{
+				// + 
+				// | \
+				// +--+
+				indexes.push_back((iSliceCount + 1) * (i)+(j)+1);
+				indexes.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
+				indexes.push_back((iSliceCount + 1) * (i + 1) + (j)+1);
+
+				// +--+
+				//  \ |
+				//    +
+				indexes.push_back((iSliceCount + 1) * (i)+(j)+1);
+				indexes.push_back((iSliceCount + 1) * (i)+(j + 1) + 1);
+				indexes.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
+			}
+		}
+
+		// ³²±ØÁ¡
+		UINT iBottomIdx = (UINT)indexes.size() - 1;
+		for (UINT i = 0; i < iSliceCount; ++i)
+		{
+			indexes.push_back(iBottomIdx);
+			indexes.push_back(iBottomIdx - (i + 2));
+			indexes.push_back(iBottomIdx - (i + 1));
+		}
+
+		std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+		Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
+		sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
+		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+
+		#pragma endregion
 	}
 
 	void LoadShader()
@@ -369,7 +480,7 @@ namespace ya::renderer
 
 	void SetUpState()
 	{
-		#pragma region Input layout 2D
+		#pragma region Input layout
 		D3D11_INPUT_ELEMENT_DESC arrLayoutDesc[6] = {};
 
 		arrLayoutDesc[0].AlignedByteOffset = 0;
@@ -393,21 +504,21 @@ namespace ya::renderer
 		arrLayoutDesc[2].SemanticName = "TEXCOORD";
 		arrLayoutDesc[2].SemanticIndex = 0;
 
-		arrLayoutDesc[3].AlignedByteOffset = 44;
+		arrLayoutDesc[3].AlignedByteOffset = 40;
 		arrLayoutDesc[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		arrLayoutDesc[3].InputSlot = 0;
 		arrLayoutDesc[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		arrLayoutDesc[3].SemanticName = "TANGENT";
 		arrLayoutDesc[3].SemanticIndex = 0;
 
-		arrLayoutDesc[4].AlignedByteOffset = 56;
+		arrLayoutDesc[4].AlignedByteOffset = 52;
 		arrLayoutDesc[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		arrLayoutDesc[4].InputSlot = 0;
 		arrLayoutDesc[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		arrLayoutDesc[4].SemanticName = "BINORMAL";
 		arrLayoutDesc[4].SemanticIndex = 0;
 
-		arrLayoutDesc[5].AlignedByteOffset = 68;
+		arrLayoutDesc[5].AlignedByteOffset = 64;
 		arrLayoutDesc[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		arrLayoutDesc[5].InputSlot = 0;
 		arrLayoutDesc[5].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -469,8 +580,6 @@ namespace ya::renderer
 			, basicShader->GetInputLayoutAddressOf());
 
 #pragma endregion
-
-
 		#pragma region sampler state
 		D3D11_SAMPLER_DESC samplerDesc = {};
 		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
@@ -748,6 +857,9 @@ namespace ya::renderer
 
 	void Render()
 	{
+		//·»´õÅ¸°Ù ¼³Á¤
+		GetDevice()->OMSetRenderTarget();
+
 		BindNoiseTexture();
 		BindLights();
 		
