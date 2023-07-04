@@ -51,6 +51,10 @@ namespace gui
 	{
 		Component::Update();
 
+		if (mMesh == nullptr
+			|| mMaterial == nullptr)
+			return;
+
 		std::string meshName
 			= std::string(mMesh->GetName().begin(), mMesh->GetName().end());
 		std::string materialName

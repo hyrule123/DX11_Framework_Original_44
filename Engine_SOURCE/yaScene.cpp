@@ -8,10 +8,12 @@ namespace ya
 	{
 		mLayers.resize((UINT)eLayerType::End);
 	}
+
 	Scene::~Scene()
 	{
 
 	}
+
 	void Scene::Initalize()
 	{
 		for (Layer& layer : mLayers)

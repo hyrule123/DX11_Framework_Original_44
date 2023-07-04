@@ -41,18 +41,18 @@ namespace ya
 		GetMesh()->BindBuffer();
 		GetMaterial()->Bind();
 
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-		if (animator)
-		{
-			animator->Binds();
-		}
+		//Animator* animator = GetOwner()->GetComponent<Animator>();
+		//if (animator)
+		//{
+		//	animator->Binds();
+		//}
 
 		GetMesh()->Render();
 		GetMaterial()->Clear();
 
-		if (animator)
-		{
-			animator->Clear();
-		}
+		//if (animator)
+		//{
+		//	animator->Clear();
+		//}
 	}
 }

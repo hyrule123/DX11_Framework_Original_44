@@ -51,14 +51,14 @@ namespace gui
 
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
-		EditorObject* gridObject = new EditorObject();
-		ya::MeshRenderer* gridMr = gridObject->AddComponent<ya::MeshRenderer>();
-		gridMr->SetMesh(ya::Resources::Find<ya::Mesh>(L"RectMesh"));
-		gridMr->SetMaterial(ya::Resources::Find<Material>(L"GridMaterial"));
-		ya::GridScript* gridScript = gridObject->AddComponent<ya::GridScript>();
-		gridScript->SetCamera(mainCamera);
+		//EditorObject* gridObject = new EditorObject();
+		//ya::MeshRenderer* gridMr = gridObject->AddComponent<ya::MeshRenderer>();
+		//gridMr->SetMesh(ya::Resources::Find<ya::Mesh>(L"RectMesh"));
+		//gridMr->SetMaterial(ya::Resources::Find<Material>(L"GridMaterial"));
+		//ya::GridScript* gridScript = gridObject->AddComponent<ya::GridScript>();
+		//gridScript->SetCamera(mainCamera);
 
-		mEditorObjects.push_back(gridObject);
+		//mEditorObjects.push_back(gridObject);
 
 		ImGui_Initialize();
 

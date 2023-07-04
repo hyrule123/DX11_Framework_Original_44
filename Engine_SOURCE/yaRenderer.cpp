@@ -130,6 +130,162 @@ namespace ya::renderer
 		cirlceMesh->CreateVertexBuffer(circleVtxes.data(), circleVtxes.size());
 		cirlceMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 #pragma endregion
+#pragma region Cube Mesh
+		Vertex arrCube[24] = {};
+
+		//struct Vertex
+		//{
+		//	Vector4 pos;
+		//	Vector4 color;
+		//	Vector2 uv;
+		//};
+
+		// À­¸é
+		arrCube[0].pos = Vector4(-0.5f, 0.5f, 0.5f ,1.0f);
+		arrCube[0].color = Vector4(1.f, 1.f, 1.f, 1.f);
+		arrCube[0].uv = Vector2(0.f, 0.f);
+		arrCube[0].normal = Vector3(0.f, 1.f, 0.f);
+
+		arrCube[1].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+		arrCube[1].color = Vector4(1.f, 1.f, 1.f, 1.f);
+		arrCube[1].uv = Vector2(0.f, 0.f);
+		arrCube[1].normal = Vector3(0.f, 1.f, 0.f);
+
+		arrCube[2].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
+		arrCube[2].color = Vector4(1.f, 1.f, 1.f, 1.f);
+		arrCube[2].uv = Vector2(0.f, 0.f);
+		arrCube[2].normal = Vector3(0.f, 1.f, 0.f);
+
+		arrCube[3].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);
+		arrCube[3].color = Vector4(1.f, 1.f, 1.f, 1.f);
+		arrCube[3].uv = Vector2(0.f, 0.f);
+		arrCube[3].normal = Vector3(0.f, 1.f, 0.f);
+
+
+		// ¾Æ·§ ¸é	
+		arrCube[4].pos = Vector4(-0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[4].color = Vector4(1.f, 0.f, 0.f, 1.f);
+		arrCube[4].uv = Vector2(0.f, 0.f);
+		arrCube[4].normal = Vector3(0.f, -1.f, 0.f);
+
+		arrCube[5].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[5].color = Vector4(1.f, 0.f, 0.f, 1.f);
+		arrCube[5].uv = Vector2(0.f, 0.f);
+		arrCube[5].normal = Vector3(0.f, -1.f, 0.f);
+
+		arrCube[6].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[6].color = Vector4(1.f, 0.f, 0.f, 1.f);
+		arrCube[6].uv = Vector2(0.f, 0.f);
+		arrCube[6].normal = Vector3(0.f, -1.f, 0.f);
+
+		arrCube[7].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[7].color = Vector4(1.f, 0.f, 0.f, 1.f);
+		arrCube[7].uv = Vector2(0.f, 0.f);
+		arrCube[7].normal = Vector3(0.f, -1.f, 0.f);
+
+		// ¿ÞÂÊ ¸é
+		arrCube[8].pos = Vector4(-0.5f, 0.5f, 0.5f, 1.0f);
+		arrCube[8].color = Vector4(0.f, 1.f, 0.f, 1.f);
+		arrCube[8].uv = Vector2(0.f, 0.f);
+		arrCube[8].normal = Vector3(-1.f, 0.f, 0.f);
+
+		arrCube[9].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);
+		arrCube[9].color = Vector4(0.f, 1.f, 0.f, 1.f);
+		arrCube[9].uv = Vector2(0.f, 0.f);
+		arrCube[9].normal = Vector3(-1.f, 0.f, 0.f);
+
+		arrCube[10].pos = Vector4(-0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[10].color = Vector4(0.f, 1.f, 0.f, 1.f);
+		arrCube[10].uv = Vector2(0.f, 0.f);
+		arrCube[10].normal = Vector3(-1.f, 0.f, 0.f);
+
+		arrCube[11].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[11].color = Vector4(0.f, 1.f, 0.f, 1.f);
+		arrCube[11].uv = Vector2(0.f, 0.f);
+		arrCube[11].normal = Vector3(-1.f, 0.f, 0.f);
+
+		// ¿À¸¥ÂÊ ¸é
+		arrCube[12].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
+		arrCube[12].color = Vector4(0.f, 0.f, 1.f, 1.f);
+		arrCube[12].uv = Vector2(0.f, 0.f);
+		arrCube[12].normal = Vector3(1.f, 0.f, 0.f);
+
+		arrCube[13].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+		arrCube[13].color = Vector4(0.f, 0.f, 1.f, 1.f);
+		arrCube[13].uv = Vector2(0.f, 0.f);
+		arrCube[13].normal = Vector3(1.f, 0.f, 0.f);
+
+		arrCube[14].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[14].color = Vector4(0.f, 0.f, 1.f, 1.f);
+		arrCube[14].uv = Vector2(0.f, 0.f);
+		arrCube[14].normal = Vector3(1.f, 0.f, 0.f);
+
+		arrCube[15].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[15].color = Vector4(0.f, 0.f, 1.f, 1.f);
+		arrCube[15].uv = Vector2(0.f, 0.f);
+		arrCube[15].normal = Vector3(1.f, 0.f, 0.f);
+
+		// µÞ ¸é
+		arrCube[16].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+		arrCube[16].color = Vector4(1.f, 1.f, 0.f, 1.f);
+		arrCube[16].uv = Vector2(0.f, 0.f);
+		arrCube[16].normal = Vector3(0.f, 0.f, 1.f);
+
+		arrCube[17].pos = Vector4(-0.5f, 0.5f, 0.5f, 1.0f);
+		arrCube[17].color = Vector4(1.f, 1.f, 0.f, 1.f);
+		arrCube[17].uv = Vector2(0.f, 0.f);
+		arrCube[17].normal = Vector3(0.f, 0.f, 1.f);
+
+		arrCube[18].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[18].color = Vector4(1.f, 1.f, 0.f, 1.f);
+		arrCube[18].uv = Vector2(0.f, 0.f);
+		arrCube[18].normal = Vector3(0.f, 0.f, 1.f);
+
+		arrCube[19].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
+		arrCube[19].color = Vector4(1.f, 1.f, 0.f, 1.f);
+		arrCube[19].uv = Vector2(0.f, 0.f);
+		arrCube[19].normal = Vector3(0.f, 0.f, 1.f);
+
+		// ¾Õ ¸é
+		arrCube[20].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);;
+		arrCube[20].color = Vector4(1.f, 0.f, 1.f, 1.f);
+		arrCube[20].uv = Vector2(0.f, 0.f);
+		arrCube[20].normal = Vector3(0.f, 0.f, -1.f);
+
+		arrCube[21].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
+		arrCube[21].color = Vector4(1.f, 0.f, 1.f, 1.f);
+		arrCube[21].uv = Vector2(0.f, 0.f);
+		arrCube[21].normal = Vector3(0.f, 0.f, -1.f);
+
+		arrCube[22].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[22].color = Vector4(1.f, 0.f, 1.f, 1.f);
+		arrCube[22].uv = Vector2(0.f, 0.f);
+		arrCube[22].normal = Vector3(0.f, 0.f, -1.f);
+
+		arrCube[23].pos = Vector4(-0.5f, -0.5f, -0.5f, 1.0f);
+		arrCube[23].color = Vector4(1.f, 0.f, 1.f, 1.f);
+		arrCube[23].uv = Vector2(0.f, 0.f);
+		arrCube[23].normal = Vector3(0.f, 0.f, -1.f);
+
+		indexes.clear();
+		for (size_t i = 0; i < 6; i++)
+		{
+			indexes.push_back(i * 4);
+			indexes.push_back(i * 4 + 1);
+			indexes.push_back(i * 4 + 2);
+
+			indexes.push_back(i * 4);
+			indexes.push_back(i * 4 + 2);
+			indexes.push_back(i * 4 + 3);
+		}
+
+		// Crate Mesh
+		std::shared_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
+		Resources::Insert<Mesh>(L"CubeMesh", cubMesh);
+		cubMesh->CreateVertexBuffer(arrCube, 24);
+		cubMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+#pragma endregion
+
 	}
 
 	void LoadShader()
@@ -203,12 +359,18 @@ namespace ya::renderer
 		postProcessShader->SetDSState(eDSType::NoWrite);
 		Resources::Insert<Shader>(L"PostProcessShader", postProcessShader);
 #pragma endregion
+#pragma region BASIC 3D
+		std::shared_ptr<Shader> basicShader = std::make_shared<Shader>();
+		basicShader->Create(eShaderStage::VS, L"BasicVS.hlsl", "main");
+		basicShader->Create(eShaderStage::PS, L"BasicPS.hlsl", "main");
+		Resources::Insert<Shader>(L"BasicShader", basicShader);
+#pragma endregion
 	}
 
 	void SetUpState()
 	{
-		#pragma region Input layout
-		D3D11_INPUT_ELEMENT_DESC arrLayoutDesc[3] = {};
+		#pragma region Input layout 2D
+		D3D11_INPUT_ELEMENT_DESC arrLayoutDesc[6] = {};
 
 		arrLayoutDesc[0].AlignedByteOffset = 0;
 		arrLayoutDesc[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -230,6 +392,31 @@ namespace ya::renderer
 		arrLayoutDesc[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		arrLayoutDesc[2].SemanticName = "TEXCOORD";
 		arrLayoutDesc[2].SemanticIndex = 0;
+
+		arrLayoutDesc[3].AlignedByteOffset = 44;
+		arrLayoutDesc[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		arrLayoutDesc[3].InputSlot = 0;
+		arrLayoutDesc[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayoutDesc[3].SemanticName = "TANGENT";
+		arrLayoutDesc[3].SemanticIndex = 0;
+
+		arrLayoutDesc[4].AlignedByteOffset = 56;
+		arrLayoutDesc[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		arrLayoutDesc[4].InputSlot = 0;
+		arrLayoutDesc[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayoutDesc[4].SemanticName = "BINORMAL";
+		arrLayoutDesc[4].SemanticIndex = 0;
+
+		arrLayoutDesc[5].AlignedByteOffset = 68;
+		arrLayoutDesc[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		arrLayoutDesc[5].InputSlot = 0;
+		arrLayoutDesc[5].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayoutDesc[5].SemanticName = "NORMAL";
+		arrLayoutDesc[5].SemanticIndex = 0;
+
+		//Vector3 tangent;
+		//Vector3 biNormal;
+		//Vector3 normal;
 
 
 		std::shared_ptr<Shader> shader = Resources::Find<Shader>(L"RectShader");
@@ -275,7 +462,15 @@ namespace ya::renderer
 			, postProcessShader->GetVSBlobBufferSize()
 			, postProcessShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+			, basicShader->GetVSBlobBufferPointer()
+			, basicShader->GetVSBlobBufferSize()
+			, basicShader->GetInputLayoutAddressOf());
+
 #pragma endregion
+
+
 		#pragma region sampler state
 		D3D11_SAMPLER_DESC samplerDesc = {};
 		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
@@ -518,6 +713,15 @@ namespace ya::renderer
 		postProcessMaterial->SetShader(postProcessShader);
 		Resources::Insert<Material>(L"PostProcessMaterial", postProcessMaterial);
 #pragma endregion
+
+#pragma region POSTPROCESS
+		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
+		std::shared_ptr<Material> basicMaterial = std::make_shared<Material>();
+		basicMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		basicMaterial->SetShader(basicShader);
+		Resources::Insert<Material>(L"BasicMaterial", basicMaterial);
+#pragma endregion
+
 	}
 
 	void Initialize()

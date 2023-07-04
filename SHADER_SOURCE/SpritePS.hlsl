@@ -59,6 +59,8 @@ float4 main(VSOut In) : SV_Target
         CalculateLight(lightColor, In.WorldPos.xyz, i);
     }
     color *= lightColor.diffuse;
+    
+    //color.a = 0.5f;
     //color = defaultTexture.Sample(anisotropicSampler, In.UV);
     return color;
 }

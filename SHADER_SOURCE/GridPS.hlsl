@@ -18,6 +18,9 @@ float4 main(VSOut In) : SV_TARGET
 {
     float4 Out = float4(1.0f, 1.0f, 1.0f, 1.0f);
     
+    //if (In.Pos.x < 0)
+    //    return;
+    
     const int width = 100;
     const int height = 100;
     
