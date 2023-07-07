@@ -19,7 +19,7 @@ struct LightAttribute
 };
 
 StructuredBuffer<LightAttribute> lightAttributes : register(t13);
-StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
+//StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
 
 //2D
 void CalculateLight(in out LightColor pLightColor, float3 position, int idx)
