@@ -303,8 +303,8 @@ namespace ya::renderer
 		sphereVtx.push_back(v);
 
 		// Body
-		UINT iStackCount = 40; // 가로 분할 개수
-		UINT iSliceCount = 40; // 세로 분할 개수
+		UINT iStackCount = 80; // 가로 분할 개수
+		UINT iSliceCount = 80; // 세로 분할 개수
 
 		float fStackAngle = XM_PI / iStackCount;
 		float fSliceAngle = XM_2PI / iSliceCount;
