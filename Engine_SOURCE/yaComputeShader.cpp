@@ -42,7 +42,7 @@ namespace ya::graphics
 		Microsoft::WRL::ComPtr<ID3DBlob> mErrorBlob = nullptr;
 
 		// Vertex Shader
-		std::filesystem::path path = std::filesystem::current_path().parent_path();
+		std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path();
 		path += "\\SHADER_SOURCE\\";
 
 		std::wstring shaderPath(path.c_str());
