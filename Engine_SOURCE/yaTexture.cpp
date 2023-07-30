@@ -31,6 +31,20 @@ namespace ya::graphics
 		GetDevice()->BindShaderResource(eShaderStage::PS, startSlot, &srv);
 	}
 
+	void Texture::Clears()
+	{
+		for (size_t i = 0; i < (UINT)eTextureSlot::End; i++)
+		{
+			ID3D11ShaderResourceView* srv = nullptr;
+			GetDevice()->BindShaderResource(eShaderStage::VS, i, &srv);
+			GetDevice()->BindShaderResource(eShaderStage::DS, i, &srv);
+			GetDevice()->BindShaderResource(eShaderStage::GS, i, &srv);
+			GetDevice()->BindShaderResource(eShaderStage::HS, i, &srv);
+			GetDevice()->BindShaderResource(eShaderStage::CS, i, &srv);
+			GetDevice()->BindShaderResource(eShaderStage::PS, i, &srv);
+		}
+	}
+
 	bool Texture::Create(UINT width, UINT height, DXGI_FORMAT format, UINT bindFlag)
 	{
 		//Depth stencil texture

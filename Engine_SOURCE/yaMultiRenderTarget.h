@@ -12,7 +12,7 @@ namespace ya::graphics
 
 		void Create(std::shared_ptr<Texture> texture[8], std::shared_ptr<Texture> dsTexture);
 		void OmSetRenderTarget();
-		void Clear();
+		void Clear(FLOAT backgroundColor[4]);
 
 	private:
 		std::shared_ptr<Texture> mRenderTargets[8];

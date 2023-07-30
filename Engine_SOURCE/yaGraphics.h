@@ -156,18 +156,19 @@ namespace ya::graphics
 	{
 		Albedo,
 		Normal,
+		
 		PositionTarget,
 		NormalTarget,
 		AlbedoTarget,
 		SpecularTarget,
-		T6,
-		T7,
+		DiffuseLightTarget,
+		SpecularLightTarget,
 
-		CubeT8,
-		CubeT9,
+		//CubeT8,
+		//CubeT9,
 
-		Array2DT10,
-		Array2DT11,
+		//Array2DT10,
+		//Array2DT11,
 
 		End,
 	};

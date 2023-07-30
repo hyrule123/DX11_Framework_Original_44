@@ -57,11 +57,12 @@ namespace ya
 		Projection = mProjection;
 
 		sortGameObjects();
-
+		
 		// deffered opaque render
 		renderTargets[(UINT)eRTType::Deffered]->OmSetRenderTarget();
 		rednerDefferd();
 
+		
 		//// deffered light 
 		renderTargets[(UINT)eRTType::Light]->OmSetRenderTarget();
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
@@ -72,10 +73,11 @@ namespace ya
 			light->Render();
 		}
 
+		
 		// swapchain 
 		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
 		
-		//// defferd + swapchain merge
+		////// defferd + swapchain merge
 		std::shared_ptr<Material> mergeMaterial = Resources::Find<Material>(L"MergeMaterial");
 		std::shared_ptr<Mesh> rectMesh = Resources::Find<Mesh>(L"RectMesh");
 

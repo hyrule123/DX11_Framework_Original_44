@@ -20,6 +20,7 @@ namespace ya::graphics
 		virtual ~Texture();
 
 		static void Clear(UINT startSlot);
+		static void Clears();
 
 		bool Create(UINT width, UINT height, DXGI_FORMAT format, UINT bindFlag);
 		bool Create(Microsoft::WRL::ComPtr<ID3D11Texture2D> texture);

@@ -536,10 +536,22 @@ namespace ya::renderer
 #pragma endregion
 #pragma region DEFFERD
 		std::shared_ptr<Shader> defferdShader = std::make_shared<Shader>();
-		defferdShader->Create(eShaderStage::VS, L"DefferedVS.hlsl", "main");
-		defferdShader->Create(eShaderStage::PS, L"DefferedPS.hlsl", "main");
+		defferdShader->Create(eShaderStage::VS, L"DefferdVS.hlsl", "main");
+		defferdShader->Create(eShaderStage::PS, L"DefferdPS.hlsl", "main");
 		Resources::Insert<Shader>(L"DefferdShader", defferdShader);
 #pragma endregion
+#pragma region LIGHT
+		std::shared_ptr<Shader> lightShader = std::make_shared<Shader>();
+		lightShader->Create(eShaderStage::VS, L"LightDirVS.hlsl", "main");
+		lightShader->Create(eShaderStage::PS, L"LightDirPS.hlsl", "main");
+
+		lightShader->SetRSState(eRSType::SolidBack);
+		lightShader->SetDSState(eDSType::None);
+		lightShader->SetBSState(eBSType::Default);
+
+		Resources::Insert<Shader>(L"LightDirShader", lightShader);
+#pragma endregion
+
 #pragma region MERGE
 		std::shared_ptr<Shader> MergeShader = std::make_shared<Shader>();
 		MergeShader->Create(eShaderStage::VS, L"MergeVS.hlsl", "main");
@@ -659,6 +671,12 @@ namespace ya::renderer
 			, defferedShader->GetVSBlobBufferPointer()
 			, defferedShader->GetVSBlobBufferSize()
 			, defferedShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> lightShader = Resources::Find<Shader>(L"LightDirShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+			, lightShader->GetVSBlobBufferPointer()
+			, lightShader->GetVSBlobBufferSize()
+			, lightShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> mergeShader = Resources::Find<Shader>(L"MergeShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
@@ -942,6 +960,22 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"DefferdMaterial", defferdMaterial);
 #pragma endregion
 
+#pragma region LIGHT
+		std::shared_ptr<Shader> lightShader = Resources::Find<Shader>(L"LightDirShader");
+		std::shared_ptr<Material> lightMaterial = std::make_shared<Material>();
+		lightMaterial->SetRenderingMode(eRenderingMode::None);
+		lightMaterial->SetShader(lightShader);
+
+		albedo = Resources::Find<Texture>(L"PositionTarget");
+		lightMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);
+		albedo = Resources::Find<Texture>(L"NormalTarget");
+		lightMaterial->SetTexture(eTextureSlot::NormalTarget, albedo);
+		albedo = Resources::Find<Texture>(L"SpecularTarget");
+		lightMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
+
+		Resources::Insert<Material>(L"LightMaterial", lightMaterial);
+#pragma endregion
+
 #pragma region MERGE
 		std::shared_ptr<Shader> mergeShader = Resources::Find<Shader>(L"MergeShader");
 		std::shared_ptr<Material> mergeMaterial = std::make_shared<Material>();
@@ -950,15 +984,15 @@ namespace ya::renderer
 
 		albedo = Resources::Find<Texture>(L"PositionTarget");
 		mergeMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);
-
-		albedo = Resources::Find<Texture>(L"NormalTarget");
-		mergeMaterial->SetTexture(eTextureSlot::NormalTarget, albedo);
-
 		albedo = Resources::Find<Texture>(L"AlbedoTarget");
 		mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, albedo);
+		albedo = Resources::Find<Texture>(L"DiffuseLightTarget");
+		mergeMaterial->SetTexture(eTextureSlot::DiffuseLightTarget, albedo);
+		albedo = Resources::Find<Texture>(L"SpecualrLightTarget");
+		mergeMaterial->SetTexture(eTextureSlot::SpecularLightTarget, albedo);
 
-		albedo = Resources::Find<Texture>(L"SpecularTarget");
-		mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
+		//Resources::Insert<Texture>(L"DiffuseLightTarget", diffuse);
+		//Resources::Insert<Texture>(L"SpecualrLightTarget", specular);
 
 		Resources::Insert<Material>(L"MergeMaterial", mergeMaterial);
 #pragma endregion
@@ -1057,13 +1091,13 @@ namespace ya::renderer
 			arrRTTex[2] = albedo;
 			arrRTTex[3] = specular;
 
-			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-			arrRTTex[2]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[2]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-			arrRTTex[3]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[3]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 
 			std::shared_ptr<Texture> dsTex = nullptr;
@@ -1079,15 +1113,15 @@ namespace ya::renderer
 			std::shared_ptr<Texture> diffuse = std::make_shared<Texture>();
 			std::shared_ptr<Texture> specular = std::make_shared<Texture>();
 
-			Resources::Insert<Texture>(L"DiffuseTarget", diffuse);
-			Resources::Insert<Texture>(L"SpecualrTarget", specular);
+			Resources::Insert<Texture>(L"DiffuseLightTarget", diffuse);
+			Resources::Insert<Texture>(L"SpecualrLightTarget", specular);
 
 			arrRTTex[0] = diffuse;
 			arrRTTex[1] = specular;
 
-			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R32G32B32A32_FLOAT
 				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 
 			renderTargets[(UINT)eRTType::Light] = new MultiRenderTarget();
@@ -1102,7 +1136,16 @@ namespace ya::renderer
 			if (renderTargets[i] == nullptr)
 				continue;
 
-			renderTargets[i]->Clear();
+			if (i == 0)
+			{
+				FLOAT backgroundColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
+				renderTargets[i]->Clear(backgroundColor);
+			}
+			else
+			{
+				FLOAT backgroundColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+				renderTargets[i]->Clear(backgroundColor);
+			}
 		}
 	}
 
