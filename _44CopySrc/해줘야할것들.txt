@@ -1,0 +1,7 @@
+1 기존 빌드이벤트 제거, 멀티프로세싱 컴파일 켜기
+
+2 Client 빌드 후 이벤트 추가
+copy $(SolutionDir)*.dll $(TargetDir)
+
+3 아카이브 떠서 따로 빌드해도 잘 빌드되는지 확인
+git archive --format=zip -o../Temp.zip master

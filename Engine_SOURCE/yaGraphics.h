@@ -97,6 +97,7 @@ namespace ya::graphics
 		CutOut,
 		Transparent,
 		PostProcess,
+		None,
 		End,
 	};
 
@@ -146,14 +147,19 @@ namespace ya::graphics
 		End,
 	};
 
+	//Texture2D positionTarget : register(t2);
+	//Texture2D normalTarget : register(t3);
+	//Texture2D albedoTarget : register(t4);
+	//Texture2D specularTarget : register(t5);
+
 	enum class eTextureSlot
 	{
 		Albedo,
 		Normal,
-		T2,
-		T3,
-		T4,
-		T5,
+		PositionTarget,
+		NormalTarget,
+		AlbedoTarget,
+		SpecularTarget,
 		T6,
 		T7,
 

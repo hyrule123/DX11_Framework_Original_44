@@ -2,13 +2,14 @@
 #include "yaTransform.h"
 #include "yaGameObject.h"
 #include "yaRenderer.h"
+#include "yaResources.h"
 
 namespace ya
 {
 	Light::Light()
 		: Component(eComponentType::Light)
 	{
-
+		renderer::lights.push_back(this);
 	}
 
 	Light::~Light()
@@ -33,13 +34,22 @@ namespace ya
 		mAttribute.position = Vector4(position.x, position.y, position.z, 1.0f);
 		mAttribute.direction = Vector4(tr->Foward().x, tr->Foward().y, tr->Foward().z, 0.0f);
 		
-		//mAttribute.type = enums::eLightType::Directional;
-
 		renderer::PushLightAttribute(mAttribute);
 	}
 
 	void Light::Render()
 	{
-
+		if (mAttribute.type == eLightType::Directional)
+		{
+			mVolumeMesh = Resources::Find<Mesh>(L"RectMesh");
+		}
+		else if (mAttribute.type == eLightType::Point)
+		{
+			mVolumeMesh = Resources::Find<Mesh>(L"CircleMesh"); 
+		}
+		else if (mAttribute.type == eLightType::Spot)
+		{
+			//
+		}
 	}
 }

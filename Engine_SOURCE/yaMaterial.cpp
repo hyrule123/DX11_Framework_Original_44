@@ -57,8 +57,6 @@ namespace ya::graphics
             if (mTexture[i] == nullptr)
                 continue;
 
-
-
             mTexture[i]->BindShaderResource(eShaderStage::VS, i);
             mTexture[i]->BindShaderResource(eShaderStage::HS, i);
             mTexture[i]->BindShaderResource(eShaderStage::DS, i);

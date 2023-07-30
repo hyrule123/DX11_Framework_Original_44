@@ -1,6 +1,8 @@
 #pragma once
 #include "yaComponent.h"
 #include "yaGraphics.h"
+#include "yaMesh.h"
+
 
 
 namespace ya
@@ -31,5 +33,6 @@ namespace ya
 
 	private:
 		graphics::LightAttribute mAttribute;
+		std::shared_ptr<Mesh> mVolumeMesh; // 광원의 범위를 표현하는 메쉬
 	};
 }

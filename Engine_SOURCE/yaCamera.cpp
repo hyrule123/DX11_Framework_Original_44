@@ -4,6 +4,7 @@
 #include "yaApplication.h"
 #include "yaRenderer.h"
 #include "yaScene.h"
+#include "yaResources.h"
 #include "yaSceneManager.h"
 #include "yaMaterial.h"
 #include "yaBaseRenderer.h"
@@ -57,12 +58,32 @@ namespace ya
 
 		sortGameObjects();
 
-		// deffered opaque
+		// deffered opaque render
 		renderTargets[(UINT)eRTType::Deffered]->OmSetRenderTarget();
 		rednerDefferd();
 
+		//// deffered light 
+		renderTargets[(UINT)eRTType::Light]->OmSetRenderTarget();
+		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
+		// 붙여버리자
+
+		for (Light* light : renderer::lights)
+		{
+			light->Render();
+		}
+
 		// swapchain 
 		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
+		
+		//// defferd + swapchain merge
+		std::shared_ptr<Material> mergeMaterial = Resources::Find<Material>(L"MergeMaterial");
+		std::shared_ptr<Mesh> rectMesh = Resources::Find<Mesh>(L"RectMesh");
+
+		rectMesh->BindBuffer();
+		mergeMaterial->Bind();
+		rectMesh->Render();
+
+		// Foward render
 		renderOpaque();
 		renderCutout();
 		renderTransparent();

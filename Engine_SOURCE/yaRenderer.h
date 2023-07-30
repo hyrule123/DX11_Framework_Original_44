@@ -103,7 +103,8 @@ namespace ya::renderer
 
 	extern std::vector<Camera*> cameras[];
 	extern std::vector<DebugMesh> debugMeshes;
-	extern std::vector<LightAttribute> lights;
+	extern std::vector<Light*> lights;
+	extern std::vector<LightAttribute> lightsAttribute;
 	extern StructedBuffer* lightsBuffer;
 
 	extern ya::GameObject* inspectorGameObject;

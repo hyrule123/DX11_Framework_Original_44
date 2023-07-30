@@ -72,6 +72,18 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)BasicPS.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DefferedVS.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DefferedPS.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MergeVS.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MergePS.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)globals.hlsli" />

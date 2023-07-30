@@ -25,7 +25,8 @@ namespace ya::renderer
 	Camera* mainCamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
-	std::vector<LightAttribute> lights;
+	std::vector<Light*> lights;
+	std::vector<LightAttribute> lightsAttribute;
 	StructedBuffer* lightsBuffer = nullptr;
 	std::shared_ptr<Texture> postProcessTexture = nullptr;
 
@@ -538,8 +539,17 @@ namespace ya::renderer
 		defferdShader->Create(eShaderStage::VS, L"DefferedVS.hlsl", "main");
 		defferdShader->Create(eShaderStage::PS, L"DefferedPS.hlsl", "main");
 		Resources::Insert<Shader>(L"DefferdShader", defferdShader);
+#pragma endregion
+#pragma region MERGE
+		std::shared_ptr<Shader> MergeShader = std::make_shared<Shader>();
+		MergeShader->Create(eShaderStage::VS, L"MergeVS.hlsl", "main");
+		MergeShader->Create(eShaderStage::PS, L"MergePS.hlsl", "main");
 
-		//defferdShader->SetRSState();
+		MergeShader->SetRSState(eRSType::SolidBack);
+		MergeShader->SetDSState(eDSType::None);
+		MergeShader->SetBSState(eBSType::Default);
+
+		Resources::Insert<Shader>(L"MergeShader", MergeShader);
 #pragma endregion
 	}
 
@@ -649,6 +659,12 @@ namespace ya::renderer
 			, defferedShader->GetVSBlobBufferPointer()
 			, defferedShader->GetVSBlobBufferSize()
 			, defferedShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> mergeShader = Resources::Find<Shader>(L"MergeShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+			, mergeShader->GetVSBlobBufferPointer()
+			, mergeShader->GetVSBlobBufferSize()
+			, mergeShader->GetInputLayoutAddressOf());
 
 #pragma endregion
 		#pragma region sampler state
@@ -925,6 +941,27 @@ namespace ya::renderer
 		defferdMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		Resources::Insert<Material>(L"DefferdMaterial", defferdMaterial);
 #pragma endregion
+
+#pragma region MERGE
+		std::shared_ptr<Shader> mergeShader = Resources::Find<Shader>(L"MergeShader");
+		std::shared_ptr<Material> mergeMaterial = std::make_shared<Material>();
+		mergeMaterial->SetRenderingMode(eRenderingMode::None);
+		mergeMaterial->SetShader(mergeShader);
+
+		albedo = Resources::Find<Texture>(L"PositionTarget");
+		mergeMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);
+
+		albedo = Resources::Find<Texture>(L"NormalTarget");
+		mergeMaterial->SetTexture(eTextureSlot::NormalTarget, albedo);
+
+		albedo = Resources::Find<Texture>(L"AlbedoTarget");
+		mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, albedo);
+
+		albedo = Resources::Find<Texture>(L"SpecularTarget");
+		mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
+
+		Resources::Insert<Material>(L"MergeMaterial", mergeMaterial);
+#pragma endregion
 	}
 
 	void Initialize()
@@ -983,7 +1020,7 @@ namespace ya::renderer
 		}
 
 		cameras[(UINT)type].clear();
-		renderer::lights.clear();
+		renderer::lightsAttribute.clear();
 	}
 
 	void CreateRenderTargets()
@@ -1010,6 +1047,11 @@ namespace ya::renderer
 			std::shared_ptr<Texture> albedo = std::make_shared<Texture>();
 			std::shared_ptr<Texture> specular = std::make_shared<Texture>();
 
+			Resources::Insert<Texture>(L"PositionTarget", pos);
+			Resources::Insert<Texture>(L"NormalTarget", normal);
+			Resources::Insert<Texture>(L"AlbedoTarget", albedo);
+			Resources::Insert<Texture>(L"SpecularTarget", specular);
+
 			arrRTTex[0] = pos;
 			arrRTTex[1] = normal;
 			arrRTTex[2] = albedo;
@@ -1030,6 +1072,27 @@ namespace ya::renderer
 			renderTargets[(UINT)eRTType::Deffered] = new MultiRenderTarget();
 			renderTargets[(UINT)eRTType::Deffered]->Create(arrRTTex, dsTex);
 		}
+
+		// Light MRT
+		{
+			std::shared_ptr<Texture> arrRTTex[8] = { };
+			std::shared_ptr<Texture> diffuse = std::make_shared<Texture>();
+			std::shared_ptr<Texture> specular = std::make_shared<Texture>();
+
+			Resources::Insert<Texture>(L"DiffuseTarget", diffuse);
+			Resources::Insert<Texture>(L"SpecualrTarget", specular);
+
+			arrRTTex[0] = diffuse;
+			arrRTTex[1] = specular;
+
+			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+			renderTargets[(UINT)eRTType::Light] = new MultiRenderTarget();
+			renderTargets[(UINT)eRTType::Light]->Create(arrRTTex, nullptr);
+		}
 	}
 
 	void ClearRenderTargets()
@@ -1045,17 +1108,17 @@ namespace ya::renderer
 
 	void PushLightAttribute(LightAttribute lightAttribute)
 	{
-		lights.push_back(lightAttribute);
+		lightsAttribute.push_back(lightAttribute);
 	}
 
 	void BindLights()
 	{
-		lightsBuffer->SetData(lights.data(), lights.size());
+		lightsBuffer->SetData(lightsAttribute.data(), lightsAttribute.size());
 		lightsBuffer->BindSRV(eShaderStage::VS, 13);
 		lightsBuffer->BindSRV(eShaderStage::PS, 13);
 
 		renderer::LightCB trCb = {};
-		trCb.numberOfLight = lights.size();
+		trCb.numberOfLight = lightsAttribute.size();
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Light];
 		cb->SetData(&trCb);

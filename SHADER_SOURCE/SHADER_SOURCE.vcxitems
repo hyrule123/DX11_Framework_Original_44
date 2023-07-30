@@ -26,10 +26,22 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)DebugVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DefferedVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DefferedPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)GridPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)GridVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MergePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MergeVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)PaintCS.hlsl">
