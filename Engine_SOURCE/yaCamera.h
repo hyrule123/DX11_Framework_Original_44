@@ -14,6 +14,7 @@ namespace ya
 		};
 
 		__forceinline static Matrix& GetGpuViewMatrix() { return View; }
+		__forceinline static Matrix& GetGpuInvViewMatrix() { return View; }
 		__forceinline static Matrix& GetGpuProjectionMatrix() { return Projection; }
 		__forceinline static void SetGpuViewMatrix(Matrix view) { View = view; }
 		__forceinline static void SetGpuProjectionMatrix(Matrix projection) { Projection = projection; }
@@ -50,6 +51,7 @@ namespace ya
 
 	private:
 		static Matrix View;
+		static Matrix InverseView;
 		static Matrix Projection;
 
 		Matrix mView;

@@ -30,7 +30,9 @@ namespace ya::renderer
 	CBUFFER(TransformCB, CBSLOT_TRANSFORM)
 	{
 		Matrix world;
+		Matrix inverseWorld;
 		Matrix view;
+		Matrix inverseView;
 		Matrix projection;
 	};
 
@@ -64,6 +66,7 @@ namespace ya::renderer
 	CBUFFER(LightCB, CBSLOT_NUMBEROFLIGHT)
 	{
 		UINT numberOfLight;
+		UINT indexOfLight;
 	};
 
 	CBUFFER(ParticleSystemCB, CBSLOT_PARTICLESYSTEM)

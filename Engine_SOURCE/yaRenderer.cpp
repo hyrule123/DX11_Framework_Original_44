@@ -547,9 +547,19 @@ namespace ya::renderer
 
 		lightShader->SetRSState(eRSType::SolidBack);
 		lightShader->SetDSState(eDSType::None);
-		lightShader->SetBSState(eBSType::Default);
+		lightShader->SetBSState(eBSType::OneOne);
 
 		Resources::Insert<Shader>(L"LightDirShader", lightShader);
+
+		lightShader = std::make_shared<Shader>();
+		lightShader->Create(eShaderStage::VS, L"LightPointVS.hlsl", "main");
+		lightShader->Create(eShaderStage::PS, L"LightPointPS.hlsl", "main");
+
+		lightShader->SetRSState(eRSType::SolidFront);
+		lightShader->SetDSState(eDSType::None);
+		lightShader->SetBSState(eBSType::OneOne);
+
+		Resources::Insert<Shader>(L"LightPointShader", lightShader);
 #pragma endregion
 
 #pragma region MERGE
@@ -673,6 +683,12 @@ namespace ya::renderer
 			, defferedShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> lightShader = Resources::Find<Shader>(L"LightDirShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+			, lightShader->GetVSBlobBufferPointer()
+			, lightShader->GetVSBlobBufferSize()
+			, lightShader->GetInputLayoutAddressOf());
+
+		lightShader = Resources::Find<Shader>(L"LightPointShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
 			, lightShader->GetVSBlobBufferPointer()
 			, lightShader->GetVSBlobBufferSize()
@@ -974,6 +990,20 @@ namespace ya::renderer
 		lightMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
 
 		Resources::Insert<Material>(L"LightMaterial", lightMaterial);
+
+		lightShader = Resources::Find<Shader>(L"LightPointShader");
+		lightMaterial = std::make_shared<Material>();
+		lightMaterial->SetRenderingMode(eRenderingMode::None);
+		lightMaterial->SetShader(lightShader);
+
+		albedo = Resources::Find<Texture>(L"PositionTarget");
+		lightMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);
+		albedo = Resources::Find<Texture>(L"NormalTarget");
+		lightMaterial->SetTexture(eTextureSlot::NormalTarget, albedo);
+		albedo = Resources::Find<Texture>(L"SpecularTarget");
+		lightMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
+
+		Resources::Insert<Material>(L"LightPointMaterial", lightMaterial);
 #pragma endregion
 
 #pragma region MERGE
@@ -1163,6 +1193,9 @@ namespace ya::renderer
 		renderer::LightCB trCb = {};
 		trCb.numberOfLight = lightsAttribute.size();
 
+		for (size_t i = 0; i < lights.size(); i++)
+			lights[i]->SetIndex(i);
+		
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Light];
 		cb->SetData(&trCb);
 		cb->Bind(eShaderStage::VS);

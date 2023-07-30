@@ -29,10 +29,11 @@ namespace ya
 		eLightType GetType() { return (eLightType)mAttribute.type; }
 		float GetRadius() { mAttribute.radius; }
 		float GetAngle() { mAttribute.angle; }
-		
+		void SetIndex(UINT idx) { mIndex = idx; }
 
 	private:
 		graphics::LightAttribute mAttribute;
 		std::shared_ptr<Mesh> mVolumeMesh; // 광원의 범위를 표현하는 메쉬
+		UINT mIndex;
 	};
 }

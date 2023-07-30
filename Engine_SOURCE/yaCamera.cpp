@@ -15,6 +15,7 @@ extern ya::Application application;
 namespace ya
 {
 	Matrix Camera::View = Matrix::Identity;
+	Matrix Camera::InverseView = Matrix::Identity;
 	Matrix Camera::Projection = Matrix::Identity;
 
 	Camera::Camera()
@@ -54,7 +55,9 @@ namespace ya
 	void Camera::Render()
 	{
 		View = mView;
+		InverseView = View.Invert();
 		Projection = mProjection;
+		
 
 		sortGameObjects();
 		
