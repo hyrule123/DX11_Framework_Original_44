@@ -34,12 +34,11 @@ namespace ya::renderer
 
 	CBUFFER(MaterialCB, CBSLOT_MATERIAL)
 	{
-		int iData;
-		float fData;
-		Vector2 xy;
-		Vector3 xyz;
-		Vector4 xyzw;
-		Matrix matrix;
+		UINT usedAlbedo;
+		UINT usedNormal;
+
+		UINT padd0;
+		UINT padd1;
 	};
 
 	CBUFFER(GridCB, CBSLOT_GRID)

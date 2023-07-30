@@ -49,7 +49,7 @@ namespace ya
 		SetMaterial(material);
 
 		std::shared_ptr<Texture> tex = Resources::Find<Texture>(L"CartoonSmoke");
-		material->SetTexture(eTextureSlot::T0, tex);
+		material->SetTexture(eTextureSlot::Albedo, tex);
 
 		Particle particles[100] = {};
 		Vector4 startPos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);

@@ -4,7 +4,9 @@ struct VSIn
 {
     float4 Position : POSITION;
     float2 UV : TEXCOORD;
+    float3 Tangent : TANGENT;
     float3 Normal : NORMAL;
+    float3 BiNormal : BINORMAL;
 };
 
 struct VSOut
@@ -14,8 +16,11 @@ struct VSOut
     
     float3 ViewPos : POSITION;
     float3 ViewNormal : NORMAL;
-    float intensity : FOG;
+
+    float3 ViewTanget : TANGENT;
+    float3 ViewBiNormal : BINORMAL;
 };
+
 
 //diffuse
 //specular
@@ -26,49 +31,51 @@ struct VSOut
 //static float3 globalLightColor = float3(1.0f, 1.0f, 1.0f);
 //static float3 globalLightAmb = float3(0.15f, 0.15f, 0.15f);
 
+// Material Default Texture
+//Texture2D albedoTexture : register(t0);
+//Texture2D normalTexture : register(t1);
+
+
 float4 main(VSOut In) : SV_Target
 {
-    float4 OutColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
+    float4 OutColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    if (usedAlbedo == 1)
+    {
+        OutColor = albedoTexture.Sample(anisotropicSampler, In.UV);
+    }
+    
+    float3 vNormal = In.ViewNormal;
+    
+    if (usedNormal == 1)
+    {
+    // 물체의 표면에 적용될 탄젠트 공간 기준 방향벡터를 가져온다.
+        vNormal = normalTexture.Sample(anisotropicSampler, In.UV);
+        
+    // 0~1값을 -1~1의 값으로 변환
+        vNormal = (vNormal * 2.0f) - 1.0f;
+        
+        float3x3 matTBN =
+        {
+            In.ViewTanget,
+          In.ViewBiNormal,
+          In.ViewNormal,
+        };
+
+        vNormal = normalize(mul(vNormal, matTBN));
+    }
     
     
     LightColor lightColor = (LightColor) 0.0f;
-    
-    
-    //void CalculateLight3D ( float3 viewPos, float3 viewNormal, int lightIdx, inout LightColor lightColor)
     for (int i = 0; i < numberOfLight; i++)
     {
-        CalculateLight3D(In.ViewPos, In.ViewNormal, i, lightColor);
+        CalculateLight3D(In.ViewPos, vNormal, i, lightColor);
     }
     
     OutColor.rgb = (OutColor.rgb * lightColor.diffuse.rgb
                     + lightColor.specular.rgb 
                     + (OutColor.xyz * lightColor.ambient.rgb));
     
-    //LightAttribute lightAttribute = lightAttributes[0];
-    
-    
-    ////광원의 방향을 월드 좌표계에서 뷰 좌표계로 변환
-    //float3 ViewLightDir = normalize(mul(float4(lightAttribute.direction.xyz, 0.0f), view));
-    
-    //float intensity = saturate(dot(-ViewLightDir, In.ViewNormal));
-    //float fSpecPow = 0.0f;
-    
-    ////뷰 스페이스 상에서 표면의 빛의 세기를 구해야함
-    //float3 vViewReflect
-    //= normalize(ViewLightDir + 2.0f * dot(-ViewLightDir, In.ViewNormal) * In.ViewNormal);
-    
-    //// 시점에서 표면을 향하는 벡터
-    //float3 vEye = normalize(In.ViewPos);
-    
-    ////시선 벡터랑 반사벡터를 내적해서 반사광의 세기를 구한다.
-    //fSpecPow = saturate(dot(-vEye, vViewReflect));
-    //fSpecPow = pow(fSpecPow, 30);
-    
-    
-    //OutColor.rgb = (OutColor.rgb * lightAttribute.color.diffuse.rgb * intensity
-    //                + lightAttribute.color.specular.rgb * fSpecPow * 1.0f
-    //                + (OutColor.xyz * lightAttribute.color.ambient.rgb));
-
     return OutColor;
         
 }

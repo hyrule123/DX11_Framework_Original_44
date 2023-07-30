@@ -144,22 +144,31 @@ namespace ya::renderer
 		arrCube[0].pos = Vector4(-0.5f, 0.5f, 0.5f ,1.0f);
 		arrCube[0].color = Vector4(1.f, 1.f, 1.f, 1.f);
 		arrCube[0].uv = Vector2(0.f, 0.f);
+		arrCube[0].tangent = Vector3(1.0f, 0.0f, 0.0f);
 		arrCube[0].normal = Vector3(0.f, 1.f, 0.f);
+		arrCube[0].biNormal= Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[1].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[1].color = Vector4(1.f, 1.f, 1.f, 1.f);
-		arrCube[1].uv = Vector2(0.f, 0.f);
+		arrCube[1].uv = Vector2(1.f, 0.f);
+
+		arrCube[1].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[1].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 		arrCube[1].normal = Vector3(0.f, 1.f, 0.f);
 
 		arrCube[2].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
 		arrCube[2].color = Vector4(1.f, 1.f, 1.f, 1.f);
-		arrCube[2].uv = Vector2(0.f, 0.f);
+		arrCube[2].uv = Vector2(0.f, 1.f);
 		arrCube[2].normal = Vector3(0.f, 1.f, 0.f);
+		arrCube[2].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[2].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[3].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);
 		arrCube[3].color = Vector4(1.f, 1.f, 1.f, 1.f);
-		arrCube[3].uv = Vector2(0.f, 0.f);
+		arrCube[3].uv = Vector2(1.f, 1.f);
 		arrCube[3].normal = Vector3(0.f, 1.f, 0.f);
+		arrCube[3].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[3].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 
 		// ¾Æ·§ ¸é	
@@ -167,105 +176,145 @@ namespace ya::renderer
 		arrCube[4].color = Vector4(1.f, 0.f, 0.f, 1.f);
 		arrCube[4].uv = Vector2(0.f, 0.f);
 		arrCube[4].normal = Vector3(0.f, -1.f, 0.f);
+		arrCube[4].tangent = Vector3(-1.0f, 0.0f, 0.0f);
+		arrCube[4].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[5].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
 		arrCube[5].color = Vector4(1.f, 0.f, 0.f, 1.f);
-		arrCube[5].uv = Vector2(0.f, 0.f);
+		arrCube[5].uv = Vector2(1.f, 0.f);
 		arrCube[5].normal = Vector3(0.f, -1.f, 0.f);
+		arrCube[5].tangent = Vector3(-1.0f, 0.0f, 0.0f);
+		arrCube[5].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[6].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[6].color = Vector4(1.f, 0.f, 0.f, 1.f);
-		arrCube[6].uv = Vector2(0.f, 0.f);
+		arrCube[6].uv = Vector2(0.f, 1.f);
 		arrCube[6].normal = Vector3(0.f, -1.f, 0.f);
+		arrCube[6].tangent = Vector3(-1.0f, 0.0f, 0.0f);
+		arrCube[6].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[7].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[7].color = Vector4(1.f, 0.f, 0.f, 1.f);
-		arrCube[7].uv = Vector2(0.f, 0.f);
+		arrCube[7].uv = Vector2(1.f, 1.f);
 		arrCube[7].normal = Vector3(0.f, -1.f, 0.f);
+		arrCube[7].tangent = Vector3(-1.0f, 0.0f, 0.0f);
+		arrCube[7].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		// ¿ÞÂÊ ¸é
 		arrCube[8].pos = Vector4(-0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[8].color = Vector4(0.f, 1.f, 0.f, 1.f);
 		arrCube[8].uv = Vector2(0.f, 0.f);
 		arrCube[8].normal = Vector3(-1.f, 0.f, 0.f);
+		arrCube[8].tangent = Vector3(0.0f, 1.0f, 0.0f);
+		arrCube[8].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[9].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);
 		arrCube[9].color = Vector4(0.f, 1.f, 0.f, 1.f);
-		arrCube[9].uv = Vector2(0.f, 0.f);
+		arrCube[9].uv = Vector2(1.f, 0.f);
 		arrCube[9].normal = Vector3(-1.f, 0.f, 0.f);
+		arrCube[9].tangent = Vector3(0.0f, 1.0f, 0.0f);
+		arrCube[9].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[10].pos = Vector4(-0.5f, -0.5f, -0.5f, 1.0f);
 		arrCube[10].color = Vector4(0.f, 1.f, 0.f, 1.f);
-		arrCube[10].uv = Vector2(0.f, 0.f);
+		arrCube[10].uv = Vector2(0.f, 1.f);
 		arrCube[10].normal = Vector3(-1.f, 0.f, 0.f);
+		arrCube[10].tangent = Vector3(0.0f, 1.0f, 0.0f);
+		arrCube[10].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[11].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[11].color = Vector4(0.f, 1.f, 0.f, 1.f);
-		arrCube[11].uv = Vector2(0.f, 0.f);
+		arrCube[11].uv = Vector2(1.f, 1.f);
 		arrCube[11].normal = Vector3(-1.f, 0.f, 0.f);
+		arrCube[11].tangent = Vector3(0.0f, 1.0f, 0.0f);
+		arrCube[11].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		// ¿À¸¥ÂÊ ¸é
 		arrCube[12].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
 		arrCube[12].color = Vector4(0.f, 0.f, 1.f, 1.f);
 		arrCube[12].uv = Vector2(0.f, 0.f);
 		arrCube[12].normal = Vector3(1.f, 0.f, 0.f);
+		arrCube[12].tangent = Vector3(0.0f, -1.0f, 0.0f);
+		arrCube[12].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[13].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[13].color = Vector4(0.f, 0.f, 1.f, 1.f);
-		arrCube[13].uv = Vector2(0.f, 0.f);
+		arrCube[13].uv = Vector2(1.f, 0.f);
 		arrCube[13].normal = Vector3(1.f, 0.f, 0.f);
+		arrCube[13].tangent = Vector3(0.0f, -1.0f, 0.0f);
+		arrCube[13].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[14].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[14].color = Vector4(0.f, 0.f, 1.f, 1.f);
-		arrCube[14].uv = Vector2(0.f, 0.f);
+		arrCube[14].uv = Vector2(0.f, 1.f);
 		arrCube[14].normal = Vector3(1.f, 0.f, 0.f);
+		arrCube[14].tangent = Vector3(0.0f, -1.0f, 0.0f);
+		arrCube[14].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[15].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
 		arrCube[15].color = Vector4(0.f, 0.f, 1.f, 1.f);
-		arrCube[15].uv = Vector2(0.f, 0.f);
+		arrCube[15].uv = Vector2(1.f, 1.f);
 		arrCube[15].normal = Vector3(1.f, 0.f, 0.f);
+		arrCube[15].tangent = Vector3(0.0f, -1.0f, 0.0f);
+		arrCube[15].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		// µÞ ¸é
 		arrCube[16].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[16].color = Vector4(1.f, 1.f, 0.f, 1.f);
 		arrCube[16].uv = Vector2(0.f, 0.f);
 		arrCube[16].normal = Vector3(0.f, 0.f, 1.f);
+		arrCube[16].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[16].biNormal = Vector3(0.0f, -1.0f, 1.0f);
 
 		arrCube[17].pos = Vector4(-0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[17].color = Vector4(1.f, 1.f, 0.f, 1.f);
-		arrCube[17].uv = Vector2(0.f, 0.f);
+		arrCube[17].uv = Vector2(1.f, 0.f);
 		arrCube[17].normal = Vector3(0.f, 0.f, 1.f);
+		arrCube[17].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[17].biNormal = Vector3(0.0f, -1.0f, 1.0f);
 
 		arrCube[18].pos = Vector4(-0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[18].color = Vector4(1.f, 1.f, 0.f, 1.f);
-		arrCube[18].uv = Vector2(0.f, 0.f);
+		arrCube[18].uv = Vector2(0.f, 1.f);
 		arrCube[18].normal = Vector3(0.f, 0.f, 1.f);
+		arrCube[18].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[18].biNormal = Vector3(0.0f, -1.0f, 1.0f);
 
 		arrCube[19].pos = Vector4(0.5f, -0.5f, 0.5f, 1.0f);
 		arrCube[19].color = Vector4(1.f, 1.f, 0.f, 1.f);
-		arrCube[19].uv = Vector2(0.f, 0.f);
+		arrCube[19].uv = Vector2(1.f, 1.f);
 		arrCube[19].normal = Vector3(0.f, 0.f, 1.f);
+		arrCube[19].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[19].biNormal = Vector3(0.0f, -1.0f, 1.0f);
 
 		// ¾Õ ¸é
 		arrCube[20].pos = Vector4(-0.5f, 0.5f, -0.5f, 1.0f);;
 		arrCube[20].color = Vector4(1.f, 0.f, 1.f, 1.f);
 		arrCube[20].uv = Vector2(0.f, 0.f);
 		arrCube[20].normal = Vector3(0.f, 0.f, -1.f);
+		arrCube[20].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[20].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		arrCube[21].pos = Vector4(0.5f, 0.5f, -0.5f, 1.0f);
 		arrCube[21].color = Vector4(1.f, 0.f, 1.f, 1.f);
-		arrCube[21].uv = Vector2(0.f, 0.f);
+		arrCube[21].uv = Vector2(1.f, 0.f);
 		arrCube[21].normal = Vector3(0.f, 0.f, -1.f);
+		arrCube[21].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[21].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		arrCube[22].pos = Vector4(0.5f, -0.5f, -0.5f, 1.0f);
 		arrCube[22].color = Vector4(1.f, 0.f, 1.f, 1.f);
-		arrCube[22].uv = Vector2(0.f, 0.f);
+		arrCube[22].uv = Vector2(0.f, 1.f);
 		arrCube[22].normal = Vector3(0.f, 0.f, -1.f);
+		arrCube[22].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[22].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		arrCube[23].pos = Vector4(-0.5f, -0.5f, -0.5f, 1.0f);
 		arrCube[23].color = Vector4(1.f, 0.f, 1.f, 1.f);
-		arrCube[23].uv = Vector2(0.f, 0.f);
+		arrCube[23].uv = Vector2(1.f, 1.f);
 		arrCube[23].normal = Vector3(0.f, 0.f, -1.f);
+		arrCube[23].tangent = Vector3(1.0f, 0.0f, 0.0f);
+		arrCube[23].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		indexes.clear();
 		for (size_t i = 0; i < 6; i++)
@@ -751,6 +800,12 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"noise_02", L"noise\\noise_02.png");
 		Resources::Load<Texture>(L"noise_03", L"noise\\noise_03.jpg");
 
+		Resources::Load<Texture>(L"BasicCube", L"Cube\\TILE_01.tga");
+		Resources::Load<Texture>(L"BasicCubeNormal", L"Cube\\TILE_01_N.tga");
+
+		Resources::Load<Texture>(L"Brick", L"Cube\\Brick.jpg");
+		Resources::Load<Texture>(L"Brick_N", L"Cube\\Brick_N.jpg");
+
 	#pragma endregion
 		#pragma region DYNAMIC TEXTURE
 		std::shared_ptr<Texture> uavTexture = std::make_shared<Texture>();
@@ -773,7 +828,7 @@ namespace ya::renderer
 		std::shared_ptr<Shader> shader = Resources::Find<Shader>(L"RectShader");
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->SetShader(shader);
-		material->SetTexture(eTextureSlot::T0, texture);
+		material->SetTexture(eTextureSlot::Albedo, texture);
 		Resources::Insert<Material>(L"RectMaterial", material);
 #pragma endregion
 		#pragma region SPRITE
@@ -782,7 +837,7 @@ namespace ya::renderer
 		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 		spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		spriteMaterial->SetShader(spriteShader);
-		spriteMaterial->SetTexture(eTextureSlot::T0, spriteTexture);
+		spriteMaterial->SetTexture(eTextureSlot::Albedo, spriteTexture);
 		Resources::Insert<Material>(L"SpriteMaterial", spriteMaterial);
 #pragma endregion
 		#pragma region UI
@@ -792,7 +847,7 @@ namespace ya::renderer
 		uiMaterial->SetRenderingMode(eRenderingMode::Transparent);
 	
 		uiMaterial->SetShader(uiShader);
-		uiMaterial->SetTexture(eTextureSlot::T0, uiTexture);
+		uiMaterial->SetTexture(eTextureSlot::Albedo, uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 #pragma endregion
 		#pragma region GRID
@@ -823,12 +878,19 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"PostProcessMaterial", postProcessMaterial);
 #pragma endregion
 
-#pragma region POSTPROCESS
+#pragma region BASIC
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
 		std::shared_ptr<Material> basicMaterial = std::make_shared<Material>();
 		basicMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		basicMaterial->SetShader(basicShader);
+
+		std::shared_ptr <Texture> albedo = Resources::Find<Texture>(L"Brick");
+		basicMaterial->SetTexture(eTextureSlot::Albedo, albedo);
+		albedo = Resources::Find<Texture>(L"Brick_N");
+		basicMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		Resources::Insert<Material>(L"BasicMaterial", basicMaterial);
+
+
 #pragma endregion
 
 	}
