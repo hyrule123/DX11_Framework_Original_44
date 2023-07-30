@@ -84,10 +84,6 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
@@ -109,10 +105,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
@@ -131,10 +123,6 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
@@ -157,10 +145,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>

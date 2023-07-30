@@ -114,6 +114,7 @@ namespace ya::renderer
 
 	//mrt
 	void CreateRenderTargets();
+	void ClearRenderTargets();
 
 	//Renderer
 	void PushLightAttribute(LightAttribute lightAttribute);

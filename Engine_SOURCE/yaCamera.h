@@ -41,6 +41,7 @@ namespace ya
 
 	private:
 		void sortGameObjects();
+		void rednerDefferd();
 		void renderOpaque();
 		void renderCutout();
 		void renderTransparent();
@@ -62,6 +63,7 @@ namespace ya
 		float mScale;
 
 		std::bitset<(UINT)eLayerType::End> mLayerMasks;
+		std::vector<GameObject*> mDefferdOpaqueGameObjects;
 		std::vector<GameObject*> mOpaqueGameObjects;
 		std::vector<GameObject*> mCutoutGameObjects;
 		std::vector<GameObject*> mTransparentGameObjects;

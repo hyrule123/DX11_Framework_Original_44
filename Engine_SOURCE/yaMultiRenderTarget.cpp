@@ -10,8 +10,9 @@ namespace ya::graphics
 		: mRenderTargets{}
 		, mDSTexture(nullptr)
 		, mRTCount(0)
+		, mClearColors{}
 	{
-
+		int a = 0;
 	}
 
 	MultiRenderTarget::~MultiRenderTarget()
@@ -54,6 +55,20 @@ namespace ya::graphics
 		{
 			GetDevice()->OMSetRenderTarget(mRTCount, arrRTV, nullptr);
 		}
+	}
+
+	void MultiRenderTarget::Clear()
+	{
+		FLOAT backgroundColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
+
+		for (size_t i = 0; i < mRTCount; i++)
+		{
+			if (mRenderTargets[i])
+				GetDevice()->ClearRenderTargetView(mRenderTargets[i]->GetRTV().Get(), backgroundColor);
+		}
+
+		if (mDSTexture.get())
+			GetDevice()->ClearDepthStencilView(mDSTexture->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL);
 	}
 
 }

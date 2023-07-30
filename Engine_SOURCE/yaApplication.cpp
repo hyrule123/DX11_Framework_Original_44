@@ -55,8 +55,9 @@ namespace ya
 	{
 		Time::Render(mHdc);
 
-		graphicDevice->Clear();
+		//graphicDevice->Clear();
 		graphicDevice->AdjustViewPorts();
+		renderer::ClearRenderTargets();
 		
 		renderer::Render();
 	}

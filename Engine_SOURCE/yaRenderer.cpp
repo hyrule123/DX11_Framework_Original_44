@@ -533,6 +533,14 @@ namespace ya::renderer
 		basicShader->Create(eShaderStage::PS, L"BasicPS.hlsl", "main");
 		Resources::Insert<Shader>(L"BasicShader", basicShader);
 #pragma endregion
+#pragma region DEFFERD
+		std::shared_ptr<Shader> defferdShader = std::make_shared<Shader>();
+		defferdShader->Create(eShaderStage::VS, L"DefferedVS.hlsl", "main");
+		defferdShader->Create(eShaderStage::PS, L"DefferedPS.hlsl", "main");
+		Resources::Insert<Shader>(L"DefferdShader", defferdShader);
+
+		//defferdShader->SetRSState();
+#pragma endregion
 	}
 
 	void SetUpState()
@@ -635,6 +643,12 @@ namespace ya::renderer
 			, basicShader->GetVSBlobBufferPointer()
 			, basicShader->GetVSBlobBufferSize()
 			, basicShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> defferedShader = Resources::Find<Shader>(L"DefferdShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+			, defferedShader->GetVSBlobBufferPointer()
+			, defferedShader->GetVSBlobBufferSize()
+			, defferedShader->GetInputLayoutAddressOf());
 
 #pragma endregion
 		#pragma region sampler state
@@ -898,7 +912,19 @@ namespace ya::renderer
 		basicMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		Resources::Insert<Material>(L"BasicMaterial", basicMaterial);
 #pragma endregion
+#pragma region DEFFERD
+		std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DefferdShader");
+		std::shared_ptr<Material> defferdMaterial = std::make_shared<Material>();
+		defferdMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
+		defferdMaterial->SetShader(defferdShader);
 
+		// specular map 추가 사용가능
+		albedo = Resources::Find<Texture>(L"Brick");
+		defferdMaterial->SetTexture(eTextureSlot::Albedo, albedo);
+		albedo = Resources::Find<Texture>(L"Brick_N");
+		defferdMaterial->SetTexture(eTextureSlot::Normal, albedo);
+		Resources::Insert<Material>(L"DefferdMaterial", defferdMaterial);
+#pragma endregion
 	}
 
 	void Initialize()
@@ -939,7 +965,9 @@ namespace ya::renderer
 	{
 		//렌더타겟 설정
 		//GetDevice()->OMSetRenderTarget();
-		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
+		//renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
+		//모든 렌더타겟들 전부 클리어
+		//ClearRenderTargets();
 
 
 		BindNoiseTexture();
@@ -1001,6 +1029,17 @@ namespace ya::renderer
 
 			renderTargets[(UINT)eRTType::Deffered] = new MultiRenderTarget();
 			renderTargets[(UINT)eRTType::Deffered]->Create(arrRTTex, dsTex);
+		}
+	}
+
+	void ClearRenderTargets()
+	{
+		for (size_t i = 0; i < (UINT)eRTType::End; i++)
+		{
+			if (renderTargets[i] == nullptr)
+				continue;
+
+			renderTargets[i]->Clear();
 		}
 	}
 

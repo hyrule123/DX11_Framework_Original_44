@@ -437,6 +437,16 @@ namespace ya::graphics
 		mContext->ClearDepthStencilView(mDepthStencilBufferTexture->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 	}
 
+	void GraphicDevice_DX11::ClearRenderTargetView(ID3D11RenderTargetView* pRenderTargetView, const FLOAT ColorRGBA[4])
+	{
+		mContext->ClearRenderTargetView(pRenderTargetView, ColorRGBA);
+	}
+
+	void GraphicDevice_DX11::ClearDepthStencilView(ID3D11DepthStencilView* pDepthStencilView, UINT ClearFlags)
+	{
+		mContext->ClearDepthStencilView(pDepthStencilView, ClearFlags, 1.0f, 0.0f);
+	}
+
 	void GraphicDevice_DX11::AdjustViewPorts()
 	{
 		// ViewPort, RenderTaget

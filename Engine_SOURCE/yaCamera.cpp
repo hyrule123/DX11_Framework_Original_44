@@ -57,6 +57,12 @@ namespace ya
 
 		sortGameObjects();
 
+		// deffered opaque
+		renderTargets[(UINT)eRTType::Deffered]->OmSetRenderTarget();
+		rednerDefferd();
+
+		// swapchain 
+		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
 		renderOpaque();
 		renderCutout();
 		renderTransparent();
@@ -123,6 +129,7 @@ namespace ya
 
 	void Camera::sortGameObjects()
 	{
+		mDefferdOpaqueGameObjects.clear();
 		mOpaqueGameObjects.clear();
 		mCutoutGameObjects.clear();
 		mTransparentGameObjects.clear();
@@ -143,6 +150,17 @@ namespace ya
 					pushGameObjectToRenderingModes(obj);
 				}
 			}
+		}
+	}
+
+	void Camera::rednerDefferd()
+	{
+		for (GameObject* obj : mDefferdOpaqueGameObjects)
+		{
+			if (obj == nullptr)
+				continue;
+
+			obj->Render();
 		}
 	}
 
@@ -206,6 +224,10 @@ namespace ya
 
 		switch (mode)
 		{
+		case ya::graphics::eRenderingMode::DefferdOpaque:
+		case ya::graphics::eRenderingMode::DefferdMask:
+			mDefferdOpaqueGameObjects.push_back(gameObj);
+			break;
 		case ya::graphics::eRenderingMode::Opaque:
 			mOpaqueGameObjects.push_back(gameObj);
 			break;

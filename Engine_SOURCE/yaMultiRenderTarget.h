@@ -12,9 +12,11 @@ namespace ya::graphics
 
 		void Create(std::shared_ptr<Texture> texture[8], std::shared_ptr<Texture> dsTexture);
 		void OmSetRenderTarget();
+		void Clear();
 
 	private:
 		std::shared_ptr<Texture> mRenderTargets[8];
+		Vector4 mClearColors[8];
 		std::shared_ptr<Texture> mDSTexture;
 		UINT mRTCount;
 	};
