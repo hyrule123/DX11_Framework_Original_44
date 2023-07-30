@@ -269,6 +269,9 @@
     <ClCompile Include="yaFontWrapper.cpp">
       <Filter>FontWrapper</Filter>
     </ClCompile>
+    <ClCompile Include="yaMultiRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -431,6 +434,9 @@
     </ClInclude>
     <ClInclude Include="yaFontWrapper.h">
       <Filter>FontWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMultiRenderTarget.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

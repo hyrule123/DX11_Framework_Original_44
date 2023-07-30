@@ -76,8 +76,23 @@ namespace ya::graphics
 		End,
 	};
 
+	enum class eRTType
+	{
+		Swapchain,
+		Deffered,
+		Light,
+		Shadow,
+		End,
+	};
+
 	enum class eRenderingMode
 	{
+		DefferdOpaque,
+		DefferdMask, 
+
+		//±¤¿øÃ³¸®
+		Light,
+
 		Opaque,
 		CutOut,
 		Transparent,

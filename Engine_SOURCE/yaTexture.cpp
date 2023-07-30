@@ -80,6 +80,12 @@ namespace ya::graphics
 				return false;
 		}
 
+		if (bindFlag & D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET)
+		{
+			if (!GetDevice()->CreateRenderTargetView(mTexture.Get(), nullptr, mRTV.GetAddressOf()))
+				return false;
+		}
+
 		return true;
 	}
 

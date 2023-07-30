@@ -56,6 +56,7 @@ namespace ya::graphics
 		void Clear();
 		void AdjustViewPorts();
 		void OMSetRenderTarget();
+		void OMSetRenderTarget(UINT NumViews, ID3D11RenderTargetView** ppRenderTargetViews, ID3D11DepthStencilView* pDepthStencilView);
 
 		void Draw();
 		void DrawIndexed(UINT indexCount, UINT StartIndexLocation, UINT BaseVertexLocation);

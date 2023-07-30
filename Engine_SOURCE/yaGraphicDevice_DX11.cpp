@@ -83,6 +83,7 @@ namespace ya::graphics
 
 		mDepthStencilBufferTexture = std::make_shared<Texture>();
 		mDepthStencilBufferTexture->Create(1600, 900, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+		Resources::Insert<Texture>(L"DepthStencilTexture", mDepthStencilBufferTexture);
 
 		RECT winRect;
 		GetClientRect(application.GetHwnd(), &winRect);
@@ -451,6 +452,11 @@ namespace ya::graphics
 		mContext->OMSetRenderTargets(1
 			, mRenderTargetTexture->GetRTV().GetAddressOf()
 			, mDepthStencilBufferTexture->GetDSV().Get());
+	}
+
+	void GraphicDevice_DX11::OMSetRenderTarget(UINT NumViews, ID3D11RenderTargetView** ppRenderTargetViews, ID3D11DepthStencilView* pDepthStencilView)
+	{
+		mContext->OMSetRenderTargets(NumViews, ppRenderTargetViews, pDepthStencilView);
 	}
 
 	void GraphicDevice_DX11::Draw()

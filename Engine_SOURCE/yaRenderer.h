@@ -10,6 +10,8 @@
 #include "yaLight.h"
 #include "yaStructedBuffer.h"
 
+#include "yaMultiRenderTarget.h"
+
 using namespace ya::math;
 using namespace ya::graphics;
 
@@ -96,6 +98,9 @@ namespace ya::renderer
 	extern Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthstencilStates[];
 	extern Microsoft::WRL::ComPtr<ID3D11BlendState> blendStates[];
 	
+
+	extern graphics::MultiRenderTarget* renderTargets[];
+
 	extern std::vector<Camera*> cameras[];
 	extern std::vector<DebugMesh> debugMeshes;
 	extern std::vector<LightAttribute> lights;
@@ -106,6 +111,9 @@ namespace ya::renderer
 	void Initialize();
 	void Render();
 	void Release();
+
+	//mrt
+	void CreateRenderTargets();
 
 	//Renderer
 	void PushLightAttribute(LightAttribute lightAttribute);

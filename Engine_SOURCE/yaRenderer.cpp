@@ -5,6 +5,10 @@
 #include "yaSceneManager.h"
 #include "yaPaintShader.h"
 #include "yaParticleShader.h"
+#include "yaApplication.h"
+
+extern ya::Application application;
+
 
 namespace ya::renderer
 {
@@ -15,13 +19,17 @@ namespace ya::renderer
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthstencilStates[(UINT)eDSType::End] = {};
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendStates[(UINT)eBSType::End] = {};
 	
+	graphics::MultiRenderTarget* renderTargets[(UINT)eRTType::End] = {};
+
+	//
 	Camera* mainCamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<LightAttribute> lights;
 	StructedBuffer* lightsBuffer = nullptr;
-
 	std::shared_ptr<Texture> postProcessTexture = nullptr;
+
+	//IMGUI
 	ya::GameObject* inspectorGameObject = nullptr;
 
 	void LoadMesh()
@@ -889,14 +897,13 @@ namespace ya::renderer
 		albedo = Resources::Find<Texture>(L"Brick_N");
 		basicMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		Resources::Insert<Material>(L"BasicMaterial", basicMaterial);
-
-
 #pragma endregion
 
 	}
 
 	void Initialize()
 	{
+		CreateRenderTargets();
 		LoadMesh();
 		LoadShader();
 		SetUpState();
@@ -915,12 +922,25 @@ namespace ya::renderer
 
 		delete lightsBuffer;
 		lightsBuffer = nullptr;
+
+		for (size_t i = 0; i < 8; i++)
+		{
+			if (renderTargets[i] == nullptr)
+			{
+				continue;
+			}
+
+			delete renderTargets[i];
+			renderTargets[i] = nullptr;
+		}
 	}
 
 	void Render()
 	{
 		//·»´õÅ¸°Ù ¼³Á¤
-		GetDevice()->OMSetRenderTarget();
+		//GetDevice()->OMSetRenderTarget();
+		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
+
 
 		BindNoiseTexture();
 		BindLights();
@@ -936,6 +956,52 @@ namespace ya::renderer
 
 		cameras[(UINT)type].clear();
 		renderer::lights.clear();
+	}
+
+	void CreateRenderTargets()
+	{
+		UINT width = application.GetWidth();
+		UINT height = application.GetHeight();
+
+		{
+			//Swapchain MRT
+			std::shared_ptr<Texture> arrRTTex[8] = {};
+			std::shared_ptr<Texture> dsTex = nullptr;
+
+			arrRTTex[0] = Resources::Find<Texture>(L"RenderTargetTexture");
+			dsTex = Resources::Find<Texture>(L"DepthStencilTexture");
+
+			renderTargets[(UINT)eRTType::Swapchain] = new MultiRenderTarget();
+			renderTargets[(UINT)eRTType::Swapchain]->Create(arrRTTex, dsTex);
+		}
+		// Deffered MRT
+		{
+			std::shared_ptr<Texture> arrRTTex[8] = { };
+			std::shared_ptr<Texture> pos = std::make_shared<Texture>();
+			std::shared_ptr<Texture> normal = std::make_shared<Texture>();
+			std::shared_ptr<Texture> albedo = std::make_shared<Texture>();
+			std::shared_ptr<Texture> specular = std::make_shared<Texture>();
+
+			arrRTTex[0] = pos;
+			arrRTTex[1] = normal;
+			arrRTTex[2] = albedo;
+			arrRTTex[3] = specular;
+
+			arrRTTex[0]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+			arrRTTex[1]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+			arrRTTex[2]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+			arrRTTex[3]->Create(width, height, DXGI_FORMAT_R8G8B8A8_UNORM
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+			std::shared_ptr<Texture> dsTex = nullptr;
+			dsTex = Resources::Find<Texture>(L"DepthStencilTexture");
+
+			renderTargets[(UINT)eRTType::Deffered] = new MultiRenderTarget();
+			renderTargets[(UINT)eRTType::Deffered]->Create(arrRTTex, dsTex);
+		}
 	}
 
 	void PushLightAttribute(LightAttribute lightAttribute)
@@ -999,5 +1065,6 @@ namespace ya::renderer
 
 		postProcessTexture->BindShaderResource(eShaderStage::PS, 60);
 	}
+
 }
 
