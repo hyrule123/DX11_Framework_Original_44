@@ -173,6 +173,14 @@ namespace ya::graphics
 		End,
 	};
 
+	struct MaterialColr
+	{
+		Vector4 diffuseColor;
+		Vector4 specularColor;
+		Vector4 AmbientColor;
+		Vector4 EmessiveColor;
+	};
+
 	struct DebugMesh
 	{
 		enums::eColliderType type;

@@ -73,9 +73,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Lib\</OutDir>
+    <ExternalIncludePath>$(SolutionDir)External\fbx\include\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Lib\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ExternalIncludePath>$(SolutionDir)External\fbx\include\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -186,6 +190,7 @@
     <ClInclude Include="yaEngine.h" />
     <ClInclude Include="yaEntity.h" />
     <ClInclude Include="yaEnums.h" />
+    <ClInclude Include="yaFbxLoader.h" />
     <ClInclude Include="yaFmod.h" />
     <ClInclude Include="yaFontWrapper.h" />
     <ClInclude Include="yaGameObject.h" />
@@ -242,6 +247,7 @@
     <ClCompile Include="yaConstantBuffer.cpp" />
     <ClCompile Include="yaEntity.cpp" />
     <ClCompile Include="yaEnums.cpp" />
+    <ClCompile Include="yaFbxLoader.cpp" />
     <ClCompile Include="yaFmod.cpp" />
     <ClCompile Include="yaFontWrapper.cpp" />
     <ClCompile Include="yaGameObject.cpp" />

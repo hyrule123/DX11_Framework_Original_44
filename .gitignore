@@ -381,4 +381,4 @@ FodyWeavers.xsd
 
 
 # Exclude Engine Lib
-!External/*
+External/

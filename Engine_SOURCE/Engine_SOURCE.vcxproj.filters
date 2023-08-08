@@ -118,6 +118,9 @@
     <Filter Include="FontWrapper">
       <UniqueIdentifier>{21b1b362-6e4d-4257-9449-c22529d2b35d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\FbxLoader">
+      <UniqueIdentifier>{1c89da41-dc31-4aa9-abef-9de6ebedf0c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -271,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="yaMultiRenderTarget.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFbxLoader.cpp">
+      <Filter>Resource\FbxLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,6 +443,9 @@
     </ClInclude>
     <ClInclude Include="yaMultiRenderTarget.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFbxLoader.h">
+      <Filter>Resource\FbxLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
