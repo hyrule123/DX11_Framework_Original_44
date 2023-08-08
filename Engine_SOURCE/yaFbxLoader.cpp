@@ -1,4 +1,7 @@
 #include "yaFbxLoader.h"
+#include "yaResources.h"
+#include "yaTexture.h"
+#include "yaMaterial.h"
 
 
 namespace ya
@@ -77,6 +80,7 @@ namespace ya
 
 		// 해당 노드의 재질정보 읽기
 		UINT materialCount = node->GetMaterialCount();
+
 		if (materialCount > 0)
 		{
 			for (UINT i = 0; i < materialCount; ++i)
@@ -340,10 +344,114 @@ namespace ya
 	void FbxLoader::LoadTexture()
 	{
 		// 텍스처 로드
+		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
+		std::filesystem::path path_fbx_texture = parentPath.wstring() + L"\\Resources\\fbx\\Texture\\";
+
+		//std::filesystem::path path_fbx_texture = path_content.wstring() + L"texture\\FBXTexture\\";
+		//if (false == exists(path_fbx_texture))
+		//{
+		//	create_directory(path_fbx_texture);
+		//}
+
+		std::filesystem::path path_origin;
+		std::filesystem::path path_filename;
+		std::filesystem::path path_dest;
+
+		for (UINT i = 0; i < mContainers.size(); ++i)
+		{
+			for (UINT j = 0; j < mContainers[i].materials.size(); ++j)
+			{
+				std::vector<std::filesystem::path> vecPath;
+				vecPath.push_back(mContainers[i].materials[j].diffuse.c_str());
+				vecPath.push_back(mContainers[i].materials[j].normal.c_str());
+				vecPath.push_back(mContainers[i].materials[j].specular.c_str());
+
+				for (size_t k = 0; k < vecPath.size(); ++k)
+				{
+					path_origin = vecPath[k];
+					path_filename = vecPath[k].filename();
+					path_dest = path_fbx_texture.wstring() + path_filename.wstring();
+
+					if (false == exists(path_dest))
+					{
+						copy(path_origin, path_dest);
+					}
+
+					//path_dest = GetRelativePath(CPathMgr::GetInst()->GetContentPath(), path_dest);
+					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
+					std::wstring texPath = L"fbx\\Texture\\";
+					texPath += path_filename;
+					Resources::Load<Texture>(path_filename, texPath);
+
+					switch (k)
+					{
+					case 0: mContainers[i].materials[j].diffuse = path_filename; break;
+					case 1: mContainers[i].materials[j].normal = path_filename; break;
+					case 2: mContainers[i].materials[j].specular = path_filename; break;
+					}
+				}
+			}
+			path_origin = path_origin.parent_path();
+			remove_all(path_origin);
+		}
+
 	}
 	void FbxLoader::CreateMaterial()
 	{
 		// 메테리얼 로드
+		std::wstring strKey;
+		std::wstring strPath;
+
+		for (UINT i = 0; i < mContainers.size(); ++i)
+		{
+			for (UINT j = 0; j < mContainers[i].materials.size(); ++j)
+			{
+				std::shared_ptr<Material> pMaterial = std::make_shared<Material>();
+
+				// Material 이름짓기
+				strKey = mContainers[i].materials[j].name;
+				if (strKey.empty())
+					strKey = std::filesystem::path(mContainers[i].materials[j].diffuse).stem();
+
+				strPath = L"material\\";
+				strPath += strKey;
+
+				// 상대경로가 곧 이름(확장자명은 제외)
+				mContainers[i].materials[j].name = strKey;
+				pMaterial->SetKey(strKey);
+				pMaterial->SetPath(strPath + L".mtrl");
+
+				std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DefferdShader");
+				//std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"BasicShader");
+				pMaterial->SetShader(defferdShader);
+
+				std::wstring strTexKey = mContainers[i].materials[j].diffuse;
+				std::shared_ptr<Texture> pTex = Resources::Find<Texture>(strTexKey);
+				if (NULL != pTex)
+					pMaterial->SetTexture(eTextureSlot::Albedo , pTex);
+
+				strTexKey = mContainers[i].materials[j].normal;
+				pTex = Resources::Find<Texture>(strTexKey);
+				if (NULL != pTex)
+					pMaterial->SetTexture(eTextureSlot::Normal, pTex);
+
+				strTexKey = mContainers[i].materials[j].specular;
+				pTex = Resources::Find<Texture>(strTexKey);
+				if (NULL != pTex)
+					pMaterial->SetTexture(eTextureSlot::Specular, pTex);
+
+				pMaterial->SetMaterialCoefficient(
+					mContainers[i].materials[j].color.diffuseColor
+					, mContainers[i].materials[j].color.specularColor
+					, mContainers[i].materials[j].color.AmbientColor
+					, mContainers[i].materials[j].color.EmessiveColor);
+
+				pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
+				//pMaterial->SetRenderingMode(eRenderingMode::Opaque);
+				Resources::Insert<Material>(pMaterial->GetKey(), pMaterial);
+			}
+		}
+
 	}
 	void FbxLoader::LoadSkeleton(fbxsdk::FbxNode* _pNode)
 	{
@@ -639,11 +747,11 @@ namespace ya
 		mScene->Destroy();
 		//mImporter->Destroy();
 
-		for (Bone* bone : mBones)
-		{
-			delete bone;
-			bone = nullptr;
-		}
+		//for (Bone* bone : mBones)
+		//{
+		//	delete bone;
+		//	bone = nullptr;
+		//}
 
 		//for (fbxsdk::FbxString* bone : mAnimationNames)
 		//{
@@ -651,10 +759,10 @@ namespace ya
 		//	bone = nullptr;
 		//}
 
-		for (AnimationClip* clip : mAnimationClips)
-		{
-			delete clip;
-			clip = nullptr;
-		}
+		//for (AnimationClip* clip : mAnimationClips)
+		//{
+		//	delete clip;
+		//	clip = nullptr;
+		//}
 	}
 }

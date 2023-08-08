@@ -64,7 +64,6 @@ namespace ya
 			normals.resize(size);
 			uv.resize(size);
 			indices.resize(size);
-			materials.resize(size);
 			weightAndIndices.resize(size);
 		}
 	};

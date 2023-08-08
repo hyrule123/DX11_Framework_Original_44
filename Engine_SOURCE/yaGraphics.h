@@ -102,6 +102,16 @@ namespace ya::graphics
 	};
 
 
+	struct Vertex
+	{
+		Vector4 pos;
+		Vector4 color;
+		Vector2 uv;
+		Vector3 tangent;
+		Vector3 biNormal;
+		Vector3 normal;
+	};
+
 	struct GpuBuffer
 	{
 		enum class eType
@@ -163,6 +173,8 @@ namespace ya::graphics
 		SpecularTarget,
 		DiffuseLightTarget,
 		SpecularLightTarget,
+
+		Specular,
 
 		//CubeT8,
 		//CubeT9,

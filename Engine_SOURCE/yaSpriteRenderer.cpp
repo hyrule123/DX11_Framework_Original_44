@@ -30,7 +30,7 @@ namespace ya
 	{
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 
-		GetMesh()->BindBuffer();
+		GetMesh()->BindBuffer(0);
 		GetMaterial(0)->Bind();
 
 		Animator* animator = GetOwner()->GetComponent<Animator>();
@@ -39,7 +39,7 @@ namespace ya
 			animator->Binds();
 		}
 
-		GetMesh()->Render();
+		GetMesh()->Render(0);
 		GetMaterial(0)->Clear();
 
 		if (animator)

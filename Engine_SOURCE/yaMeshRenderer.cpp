@@ -38,8 +38,18 @@ namespace ya
 		//GetMaterial()->Clear();
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 
-		GetMesh()->BindBuffer();
-		GetMaterial(0)->Bind();
+		UINT subSetCount = GetMesh()->GetSubSetCount();
+		for (size_t i = 0; i < subSetCount; i++)
+		{
+			GetMesh()->BindBuffer(i);
+			GetMaterial(i)->Bind();
+
+			GetMesh()->Render(i);
+			GetMaterial(i)->Clear();
+		}
+
+		//GetMesh()->BindBuffer(0);
+		//GetMaterial(0)->Bind();
 
 		//Animator* animator = GetOwner()->GetComponent<Animator>();
 		//if (animator)
@@ -47,8 +57,8 @@ namespace ya
 		//	animator->Binds();
 		//}
 
-		GetMesh()->Render();
-		GetMaterial(0)->Clear();
+		//GetMesh()->Render(0);
+		//GetMaterial(0)->Clear();
 
 		//if (animator)
 		//{

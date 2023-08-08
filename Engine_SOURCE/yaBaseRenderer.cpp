@@ -38,7 +38,7 @@ namespace ya
 		if (!mMaterial.empty())
 			mMaterial.clear();
 		
-		UINT count = mMesh->GetIndexBufferCount();
+		UINT count = mMesh->GetSubSetCount();
 		mMaterial.resize(count);
 	}
 	//void BaseRenderer::SetMaterial(std::shared_ptr <Material> shader, int idx)

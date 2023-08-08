@@ -19,6 +19,7 @@ namespace ya
 
 		GameObject* Instantiate();
 
+
 	private:
 		std::shared_ptr<Mesh> mMesh;
 		std::vector<std::shared_ptr<Material>> mMaterials;

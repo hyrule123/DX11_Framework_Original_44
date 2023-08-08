@@ -28,11 +28,24 @@ namespace ya::graphics
 		eRenderingMode GetRenderingMode() { return mMode; }
 		void SetRenderingMode(eRenderingMode mode) { mMode = mode; }
 
+		void SetMaterialCoefficient(Vector4 _vDiff, Vector4 _vSpec, Vector4 _vAmb, Vector4 _vEmis)
+		{
+			mDiffuseColor = _vDiff;
+			mSpecularColor = _vSpec;
+			mAmbientColor = _vAmb;
+			mEmissiveColor = _vEmis;
+		}
+
 	private:
 		std::shared_ptr<Shader> mShader;
 		std::shared_ptr<Texture> mTexture[(UINT)eTextureSlot::End];
 		MaterialCB mCB;
 		eRenderingMode mMode;
+
+		Vector4 mDiffuseColor;
+		Vector4 mSpecularColor;
+		Vector4 mAmbientColor;
+		Vector4 mEmissiveColor;
 	};
 }
 

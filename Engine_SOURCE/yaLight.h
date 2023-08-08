@@ -33,7 +33,7 @@ namespace ya
 
 	private:
 		graphics::LightAttribute mAttribute;
-		std::shared_ptr<Mesh> mVolumeMesh; // 광원의 범위를 표현하는 메쉬
+		std::shared_ptr<class Mesh> mVolumeMesh; // 광원의 범위를 표현하는 메쉬
 		UINT mIndex;
 	};
 }

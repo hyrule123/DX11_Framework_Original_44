@@ -17,16 +17,6 @@ using namespace ya::graphics;
 
 namespace ya::renderer
 {
-	struct Vertex
-	{
-		Vector4 pos;
-		Vector4 color;
-		Vector2 uv;
-		Vector3 tangent;
-		Vector3 biNormal;
-		Vector3 normal;
-	};
-
 	CBUFFER(TransformCB, CBSLOT_TRANSFORM)
 	{
 		Matrix world;
@@ -40,8 +30,8 @@ namespace ya::renderer
 	{
 		UINT usedAlbedo;
 		UINT usedNormal;
+		UINT usedSpecular;
 
-		UINT padd0;
 		UINT padd1;
 	};
 

@@ -71,6 +71,10 @@ namespace ya::graphics
         if (mTexture[(UINT)eTextureSlot::Normal])
             mCB.usedNormal = 1;
 
+        if (mTexture[(UINT)eTextureSlot::Specular])
+            mCB.usedSpecular = 1;
+
+
         ConstantBuffer* pCB = renderer::constantBuffers[(UINT)eCBType::Material];
         pCB->SetData(&mCB);
         pCB->Bind(eShaderStage::VS);

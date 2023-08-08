@@ -2,6 +2,8 @@
 #include "yaGameObject.h"
 #include "yaFbxLoader.h"
 #include "yaResources.h"
+#include "yaObject.h"
+#include "yaMeshRenderer.h"
 
 namespace ya
 {
@@ -55,8 +57,15 @@ namespace ya
 	}
 	GameObject* MeshData::Instantiate()
 	{
-		//GameObject* gameObj = 
+		GameObject* gameObj = object::Instantiate<GameObject>(eLayerType::Player);
+		MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
+		mr->SetMesh(mMesh);
+		
+		for (size_t i = 0; i < mMaterials.size(); i++)
+		{
+			mr->SetMaterial(mMaterials[i], i);
+		}
 
-		return nullptr;
+		return gameObj;
 	}
 }
