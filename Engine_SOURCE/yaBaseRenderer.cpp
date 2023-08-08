@@ -9,6 +9,7 @@ namespace ya
 	BaseRenderer::BaseRenderer(eComponentType type)
 		: Component(type)
 	{
+		mMaterial.resize(20);
 	}
 
 	BaseRenderer::~BaseRenderer()
@@ -31,4 +32,26 @@ namespace ya
 	{
 	}
 
+	void BaseRenderer::SetMesh(std::shared_ptr<Mesh> mesh)
+	{
+		mMesh = mesh;
+		if (!mMaterial.empty())
+			mMaterial.clear();
+		
+		UINT count = mMesh->GetIndexBufferCount();
+		mMaterial.resize(count);
+	}
+	//void BaseRenderer::SetMaterial(std::shared_ptr <Material> shader, int idx)
+	//{
+
+	//}
+
+	//std::shared_ptr<Mesh> BaseRenderer::GetMesh()
+	//{
+
+	//}
+	//std::shared_ptr <Material> BaseRenderer::GetMaterial(int idx)
+	//{
+
+	//}
 }

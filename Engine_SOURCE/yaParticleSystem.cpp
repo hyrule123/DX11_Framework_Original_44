@@ -46,7 +46,7 @@ namespace ya
 
 		// Material ¼¼ÆÃ
 		std::shared_ptr<Material> material = Resources::Find<Material>(L"ParticleMaterial");
-		SetMaterial(material);
+		SetMaterial(material, 0);
 
 		std::shared_ptr<Texture> tex = Resources::Find<Texture>(L"CartoonSmoke");
 		material->SetTexture(eTextureSlot::Albedo, tex);
@@ -123,7 +123,7 @@ namespace ya
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 		mBuffer->BindSRV(eShaderStage::GS, 15);
 
-		GetMaterial()->Bind();
+		GetMaterial(0)->Bind();
 		GetMesh()->RenderInstanced(mMaxParticles);
 
 		mBuffer->Clear();

@@ -42,7 +42,7 @@ namespace gui
 			//	return;
 
 
-			mMaterial = meshRenderer->GetMaterial();
+			mMaterial = meshRenderer->GetMaterial(0);
 			mMesh = meshRenderer->GetMesh();
 		}
 	}
@@ -131,6 +131,6 @@ namespace gui
 		std::shared_ptr<ya::Material> material = ya::Resources::Find<ya::Material>(wKey);
 
 		Inspector* inspector = editor.GetWidget<Inspector>("Inspector");
-		inspector->GetTargetGameObject()->GetComponent<ya::MeshRenderer>()->SetMaterial(material);
+		inspector->GetTargetGameObject()->GetComponent<ya::MeshRenderer>()->SetMaterial(material, 0);
 	}
 }

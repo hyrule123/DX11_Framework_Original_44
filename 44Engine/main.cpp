@@ -11,12 +11,23 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 
+#ifdef _DEBUG
+#pragma comment(lib, "..\\External\\fbx\\lib\\Debug\\libfbxsdk-md.lib") 
+#else 
+#pragma comment(lib, "..\\External\\fbx\\lib\\Release\\libfbxsdk-md.lib") 
+#endif
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\Lib\\Engine_SOURCE.lib") 
 #else 
 #pragma comment(lib, "..\\x64\\Release\\Lib\\Engine_SOURCE.lib") 
 #endif
+
+//#ifdef _DEBUG
+//#pragma comment(lib, "..\\External\\fbx\\lib\\Debug\\libfbxsdk-md.lib") 
+//#else 
+//#pragma comment(lib, "..\\External\\fbx\\lib\\Release\\libfbxsdk-md.lib") 
+//#endif
 
 
 #define MAX_LOADSTRING 100

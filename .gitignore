@@ -369,8 +369,8 @@ FodyWeavers.xsd
 # Build Result
 *.[eE][xX][eE]
 *.[iI]][dD][bB]
-#*.[lL][iI][bB]
-#*.[dD][lL][lL]
+*.[lL][iI][bB]
+*.[dD][lL][lL]
 *.[eE][xX][pP]
 *.[iI][dD][bB]
 ## HLSL Compiled Shader

@@ -18,6 +18,14 @@ namespace ya
 
 	}
 
+	std::shared_ptr<Mesh> Mesh::CreateFromContainer(FbxLoader* loader)
+	{
+		const Container& container = loader->GetContainer(0);
+
+
+		return nullptr;
+	}
+
 	HRESULT Mesh::Load(const std::wstring& path)
 	{
 		return E_NOTIMPL;

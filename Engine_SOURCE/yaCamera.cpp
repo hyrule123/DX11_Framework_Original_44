@@ -242,9 +242,9 @@ namespace ya
 		if (renderer == nullptr)
 			return;
 
-		std::shared_ptr<Material> material = renderer->GetMaterial();
-		//if (material == nullptr)
-		//	continue;
+		std::shared_ptr<Material> material = renderer->GetMaterial(0);
+		if (material == nullptr)
+			return;
 
 		eRenderingMode mode = material->GetRenderingMode();
 

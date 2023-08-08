@@ -3,14 +3,20 @@
 #include "yaMath.h"
 #include "yaGraphics.h"
 
-#include "..\External\fbx\include\fbxsdk.h"
-//#include <fbxsdk.h>
+#include <fbxsdk/scene/geometry/fbxnurbs.h >
+#include <fbxsdk.h>
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\External\\fbx\\lib\\Debug\\libfbxsdk-md.lib") 
 #else 
 #pragma comment(lib, "..\\External\\fbx\\lib\\Release\\libfbxsdk-md.lib") 
 #endif
+
+//#ifdef _DEBUG
+//#pragma comment(lib, "..\\External\\fbx\\lib\\Debug\\libxml2-md.lib") 
+//#else 
+//#pragma comment(lib, "..\\External\\fbx\\lib\\Release\\libxml2-md.lib") 
+//#endif
 
 namespace ya
 {
@@ -42,11 +48,13 @@ namespace ya
 		std::vector<Vector3> normals;
 		std::vector<Vector2> uv;
 
-		std::vector<UINT> indices;
-		std::vector<MaterialColr> colors;
+		std::vector<std::vector<UINT>> indices;
+		std::vector<FbxMaterial> materials;
 
 		bool bAnimation;
 		std::vector<std::vector<WeightAndIndices>> weightAndIndices;
+		std::vector<Vector4> skiningWeights;
+		std::vector<Vector4> skiningIndices;
 
 		void Resize(UINT size)
 		{
@@ -56,7 +64,7 @@ namespace ya
 			normals.resize(size);
 			uv.resize(size);
 			indices.resize(size);
-			colors.resize(size);
+			materials.resize(size);
 			weightAndIndices.resize(size);
 		}
 	};
@@ -90,14 +98,16 @@ namespace ya
 	class FbxLoader
 	{
 	public:
-		static void LoadMeshDataFromNode(fbxsdk::FbxNode* _pRoot);
+		static void Initialize();
+		static bool  LoadFbx(const std::wstring& path);
+		static void LoadMeshDataFromNode(fbxsdk::FbxNode* node);
 		static void LoadMesh(fbxsdk::FbxMesh* _pFbxMesh);
 		static void LoadMaterial(fbxsdk::FbxSurfaceMaterial* _pMtrlSur);
 
 		static void GetTangent(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iVtxOrder);
 		static void GetBinormal(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iVtxOrder);
 		static void GetNormal(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iVtxOrder);
-		static void GetUV(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iVtxOrder);
+		static void GetUV(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iUVIndex);
 
 		static Vector4 GetMtrlData(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
 		static std::wstring GetMtrlTextureName(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
@@ -112,10 +122,15 @@ namespace ya
 		static void Triangulate(fbxsdk::FbxNode* _pNode);
 
 		static void LoadAnimationData(fbxsdk::FbxMesh* _pMesh, Container* _pContainer);
+		static void CheckWeightAndIndices(fbxsdk::FbxMesh* _pMesh, Container* _pContainer);
 		static void LoadWeightsAndIndices(fbxsdk::FbxCluster* _pCluster, int _iBoneIdx, Container* _pContainer);
 		static void LoadOffsetMatrix(fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _iBoneIdx, Container* _pContainer);
 		static void LoadKeyframeTransform(fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform
 			, int _iBoneIdx, Container* _pContainer);
+		static int FindBoneIndex(std::string _strBoneName);
+		static fbxsdk::FbxAMatrix GetTransform(fbxsdk::FbxNode* _pNode);
+
+		static void Release();
 		
 		static int GetContainerCount() { return (int)mContainers.size(); }
 		static const Container& GetContainer(int idx) { return mContainers[idx]; }

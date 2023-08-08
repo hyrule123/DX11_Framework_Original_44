@@ -29,7 +29,7 @@ namespace ya
 			x,// X position
 			y,// Y position
 			rgb,// Text color, 0xAaBbGgRr
-			0      // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+			FW1_RESTORESTATE      // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
 		);
 	}
 

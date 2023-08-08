@@ -7,6 +7,7 @@
 #include "yaCollisionManager.h"
 #include "yaFmod.h"
 #include "yaFontWrapper.h"
+#include "yaFbxLoader.h"
 
 namespace ya
 {
@@ -26,6 +27,7 @@ namespace ya
 	{
 		Time::Initialize();
 		Input::Initialize();
+		FbxLoader::Initialize();
 		Fmod::Initialize();
 		FontWrapper::Initialize();
 
@@ -84,6 +86,7 @@ namespace ya
 	void Application::Release()
 	{
 		Resources::deleteTest();
+		FbxLoader::Release();
 		Fmod::Release();
 		FontWrapper::Release();
 	}

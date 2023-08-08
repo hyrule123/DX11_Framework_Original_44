@@ -278,6 +278,7 @@
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Resource\FbxLoader</Filter>
     </ClCompile>
+    <ClCompile Include="yaMeshData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -447,6 +448,7 @@
     <ClInclude Include="yaFbxLoader.h">
       <Filter>Resource\FbxLoader</Filter>
     </ClInclude>
+    <ClInclude Include="yaMeshData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

@@ -41,7 +41,7 @@ namespace gui
 		ya::MeshRenderer* renderer
 			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ya::MeshRenderer>();
 
-		renderer->SetMaterial(material);
+		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
 		std::shared_ptr<ya::Mesh> circleMesh = ya::Resources::Find<ya::Mesh>(L"CircleMesh");
@@ -50,7 +50,7 @@ namespace gui
 		renderer
 			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ya::MeshRenderer>();
 
-		renderer->SetMaterial(material);
+		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(circleMesh);
 
 		//그리드 이쪽으로 옮겨줘야 한다.

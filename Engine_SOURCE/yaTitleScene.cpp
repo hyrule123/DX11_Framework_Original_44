@@ -19,6 +19,7 @@
 #include "yaLight.h"
 #include "yaPaintShader.h"
 #include "yaParticleSystem.h"
+#include "yaMeshData.h"
 
 namespace ya
 {
@@ -49,8 +50,8 @@ namespace ya
 			//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 			player->SetName(L"Player");
 			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-			mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			player->AddComponent<PlayerScript>();
 		}
 
@@ -61,8 +62,8 @@ namespace ya
 			//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 			player->SetName(L"Player");
 			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-			mr->SetMaterial(Resources::Find<Material>(L"DefferdMaterial"));
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"DefferdMaterial"), 0);
 			player->AddComponent<PlayerScript>();
 		}
 
@@ -107,6 +108,11 @@ namespace ya
 			lightComp->SetDiffuse(Vector4(0.0f, 1.0f, 0.0f, 1.0f));
 			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		}
+
+		//fbx
+		{
+			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
 		}
 
 		Scene::Initalize();

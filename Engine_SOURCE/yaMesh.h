@@ -1,6 +1,7 @@
 #pragma once
 #include "yaGraphics.h"
 #include "yaResource.h"
+#include "yaFbxLoader.h"
 
 namespace ya
 {
@@ -10,6 +11,7 @@ namespace ya
 		Mesh();
 		virtual ~Mesh();
 
+		static std::shared_ptr<Mesh> CreateFromContainer(FbxLoader* loader);
 		virtual HRESULT Load(const std::wstring& path) override;
 
 		bool CreateVertexBuffer(void* data, UINT count);
@@ -17,6 +19,8 @@ namespace ya
 		void BindBuffer();
 		void Render();
 		void RenderInstanced(UINT count);
+
+		UINT GetIndexBufferCount() { return 1; } //mIndexBuffer.size(); }
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;

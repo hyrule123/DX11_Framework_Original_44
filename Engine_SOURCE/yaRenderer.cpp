@@ -12,7 +12,7 @@ extern ya::Application application;
 
 namespace ya::renderer
 {
-	Vertex vertexes[4] = {};
+	
 	ConstantBuffer* constantBuffers[(UINT)eCBType::End] = {};
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerStates[(UINT)eSamplerType::End] = {};
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerStates[(UINT)eRSType::End] = {};
@@ -33,18 +33,19 @@ namespace ya::renderer
 	//IMGUI
 	ya::GameObject* inspectorGameObject = nullptr;
 
-	void LoadMesh()
+	void LoadPoint()
 	{
-		#pragma region POINT MESH
 		Vertex v = {};
 		std::shared_ptr<Mesh> pointMesh = std::make_shared<Mesh>();
 		Resources::Insert<Mesh>(L"PointMesh", pointMesh);
 		pointMesh->CreateVertexBuffer(&v, 1);
 		UINT pointIndex = 0;
 		pointMesh->CreateIndexBuffer(&pointIndex, 1);
-#pragma endregion
-		#pragma region RECT MESH
-		//RECT
+	}
+	void LoadRect()
+	{
+		Vertex vertexes[4] = {};
+		std::vector<UINT> indexes = {};
 		vertexes[0].pos = Vector4(-0.5f, 0.5f, 0.0f, 1.0f);
 		vertexes[0].color = Vector4(0.f, 1.f, 0.f, 1.f);
 		vertexes[0].uv = Vector2(0.f, 0.f);
@@ -66,7 +67,7 @@ namespace ya::renderer
 		Resources::Insert<Mesh>(L"RectMesh", mesh);
 		mesh->CreateVertexBuffer(vertexes, 4);
 
-		std::vector<UINT> indexes;
+		
 		indexes.push_back(0);
 		indexes.push_back(1);
 		indexes.push_back(2);
@@ -75,8 +76,12 @@ namespace ya::renderer
 		indexes.push_back(3);
 		indexes.push_back(0);
 		mesh->CreateIndexBuffer(indexes.data(), indexes.size());
-#pragma endregion
-		#pragma region DEBUG RECTMESH
+	}
+	void LoadDebugRect()
+	{
+		Vertex vertexes[4] = {};
+		std::vector<UINT> indexes = {};
+
 		vertexes[0].pos = Vector4(-0.5f, 0.5f, -0.00001f, 1.0f);
 		vertexes[0].color = Vector4(0.f, 1.f, 0.f, 1.f);
 		vertexes[0].uv = Vector2(0.f, 0.f);
@@ -99,8 +104,12 @@ namespace ya::renderer
 		debugmesh->CreateVertexBuffer(vertexes, 4);
 		debugmesh->CreateIndexBuffer(indexes.data(), indexes.size());
 #pragma endregion
-		#pragma region CIRCLE MESH
+	}
+	void LoadCircle()
+	{
 		std::vector<Vertex> circleVtxes;
+		std::vector<UINT> indexes = {};
+
 		Vertex center = {};
 		center.pos = Vector4(0.0f, 0.0f, -0.00001f, 1.0f);
 		center.color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
@@ -138,24 +147,19 @@ namespace ya::renderer
 		Resources::Insert<Mesh>(L"CircleMesh", cirlceMesh);
 		cirlceMesh->CreateVertexBuffer(circleVtxes.data(), circleVtxes.size());
 		cirlceMesh->CreateIndexBuffer(indexes.data(), indexes.size());
-#pragma endregion
-		#pragma region Cube Mesh
+	}
+	void LoadCube()
+	{
 		Vertex arrCube[24] = {};
-
-		//struct Vertex
-		//{
-		//	Vector4 pos;
-		//	Vector4 color;
-		//	Vector2 uv;
-		//};
+		std::vector<UINT> indexes = {};
 
 		// À­¸é
-		arrCube[0].pos = Vector4(-0.5f, 0.5f, 0.5f ,1.0f);
+		arrCube[0].pos = Vector4(-0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[0].color = Vector4(1.f, 1.f, 1.f, 1.f);
 		arrCube[0].uv = Vector2(0.f, 0.f);
 		arrCube[0].tangent = Vector3(1.0f, 0.0f, 0.0f);
 		arrCube[0].normal = Vector3(0.f, 1.f, 0.f);
-		arrCube[0].biNormal= Vector3(0.0f, 0.0f, 1.0f);
+		arrCube[0].biNormal = Vector3(0.0f, 0.0f, 1.0f);
 
 		arrCube[1].pos = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
 		arrCube[1].color = Vector4(1.f, 1.f, 1.f, 1.f);
@@ -342,13 +346,14 @@ namespace ya::renderer
 		Resources::Insert<Mesh>(L"CubeMesh", cubMesh);
 		cubMesh->CreateVertexBuffer(arrCube, 24);
 		cubMesh->CreateIndexBuffer(indexes.data(), indexes.size());
-		#pragma endregion
-		#pragma region Sphere Mesh
-		
-		v = {};
-		fRadius = 0.5f;
+	}
+	void LoadSphere()
+	{
 		std::vector<Vertex> sphereVtx;
-	
+		std::vector<UINT> indexes = {};
+		Vertex v = {};
+		float fRadius = 0.5f;
+
 
 		// Top
 		v.pos = Vector4(0.0f, fRadius, 0.0f, 1.0f);
@@ -454,9 +459,16 @@ namespace ya::renderer
 		sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
 		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
-		#pragma endregion
 	}
-
+	void LoadMesh()
+	{
+		LoadPoint();
+		LoadRect();
+		LoadDebugRect();
+		LoadCircle();
+		LoadCube();
+		LoadSphere();
+	}
 	void LoadShader()
 	{
 #pragma region DEFAULT TRIANGLE SHADER
@@ -561,7 +573,6 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"LightPointShader", lightShader);
 #pragma endregion
-
 #pragma region MERGE
 		std::shared_ptr<Shader> MergeShader = std::make_shared<Shader>();
 		MergeShader->Create(eShaderStage::VS, L"MergeVS.hlsl", "main");
