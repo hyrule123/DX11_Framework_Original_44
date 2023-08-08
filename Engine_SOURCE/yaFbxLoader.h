@@ -31,6 +31,7 @@ namespace ya
 		std::wstring diffuse;
 		std::wstring normal;
 		std::wstring specular;
+		std::wstring emissive;
 	};
 
 	struct WeightAndIndices
@@ -141,6 +142,7 @@ namespace ya
 		static fbxsdk::FbxManager* mManager;
 		static fbxsdk::FbxScene* mScene;
 		static fbxsdk::FbxImporter* mImporter;
+		static fbxsdk::FbxIOSettings* mioSettings;
 
 		static std::vector<Container> mContainers;
 

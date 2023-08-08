@@ -382,3 +382,6 @@ FodyWeavers.xsd
 
 # Exclude Engine Lib
 External/
+
+# Exclude TGA
+*.[tT][gG][aA]

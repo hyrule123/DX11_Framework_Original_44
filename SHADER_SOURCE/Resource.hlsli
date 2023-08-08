@@ -2,6 +2,7 @@
 Texture2D albedoTexture : register(t0);
 Texture2D normalTexture : register(t1);
 Texture2D specularTexture : register(t8);
+//Texture2D emissiveTexture : register(t9);
 
 // defferd
 Texture2D positionTarget : register(t2);

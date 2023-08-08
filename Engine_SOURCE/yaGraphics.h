@@ -175,6 +175,7 @@ namespace ya::graphics
 		SpecularLightTarget,
 
 		Specular,
+		Emissive,
 
 		//CubeT8,
 		//CubeT9,

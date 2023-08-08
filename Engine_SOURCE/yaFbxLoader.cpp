@@ -9,6 +9,7 @@ namespace ya
 	fbxsdk::FbxManager* FbxLoader::mManager = nullptr;
 	fbxsdk::FbxScene* FbxLoader::mScene = nullptr;
 	fbxsdk::FbxImporter* FbxLoader::mImporter = nullptr;
+	fbxsdk::FbxIOSettings* FbxLoader::mioSettings = nullptr;
 	std::vector<Container> FbxLoader::mContainers = {};
 	std::vector<Bone*> FbxLoader::mBones = {};
 	fbxsdk::FbxArray<fbxsdk::FbxString*> FbxLoader::mAnimationNames = {};
@@ -17,9 +18,10 @@ namespace ya
 	void FbxLoader::Initialize()
 	{
 		mManager = fbxsdk::FbxManager::Create();
-		fbxsdk::FbxIOSettings* ioSettings 
-			= fbxsdk::FbxIOSettings::Create(mManager, IOSROOT);
-		mManager->SetIOSettings(ioSettings);
+		mioSettings = fbxsdk::FbxIOSettings::Create(mManager, IOSROOT);
+
+		//ioSettings->Destroy();
+		mManager->SetIOSettings(mioSettings);
 		mScene = fbxsdk::FbxScene::Create(mManager, "");
 		mImporter = fbxsdk::FbxImporter::Create(mManager, "");
 	}
@@ -189,6 +191,7 @@ namespace ya
 		materialInfo.diffuse = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sDiffuse);
 		materialInfo.normal = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sNormalMap);
 		materialInfo.specular = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sSpecular);
+		materialInfo.emissive = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sEmissive);
 
 		mContainers.back().materials.push_back(materialInfo);
 	}
@@ -365,11 +368,15 @@ namespace ya
 				vecPath.push_back(mContainers[i].materials[j].diffuse.c_str());
 				vecPath.push_back(mContainers[i].materials[j].normal.c_str());
 				vecPath.push_back(mContainers[i].materials[j].specular.c_str());
+				vecPath.push_back(mContainers[i].materials[j].emissive.c_str());
 
 				for (size_t k = 0; k < vecPath.size(); ++k)
 				{
 					path_origin = vecPath[k];
 					path_filename = vecPath[k].filename();
+					if (path_filename == L"")
+						continue;
+
 					path_dest = path_fbx_texture.wstring() + path_filename.wstring();
 
 					if (false == exists(path_dest))
@@ -388,6 +395,7 @@ namespace ya
 					case 0: mContainers[i].materials[j].diffuse = path_filename; break;
 					case 1: mContainers[i].materials[j].normal = path_filename; break;
 					case 2: mContainers[i].materials[j].specular = path_filename; break;
+					case 3: mContainers[i].materials[j].emissive = path_filename; break;
 					}
 				}
 			}
@@ -743,26 +751,26 @@ namespace ya
 	}
 	void FbxLoader::Release()
 	{
-		mManager->Destroy();
+		mioSettings->Destroy();
 		mScene->Destroy();
-		//mImporter->Destroy();
+		mManager->Destroy(); 
+		
+		for (Bone* bone : mBones)
+		{
+			delete bone;
+			bone = nullptr;
+		}
 
-		//for (Bone* bone : mBones)
-		//{
-		//	delete bone;
-		//	bone = nullptr;
-		//}
+		for (size_t i = 0; i < mAnimationNames.Size(); i++)
+		{
+			delete mAnimationNames[i]; 
+			mAnimationNames[i] = nullptr;
+		}
 
-		//for (fbxsdk::FbxString* bone : mAnimationNames)
-		//{
-		//	delete bone;
-		//	bone = nullptr;
-		//}
-
-		//for (AnimationClip* clip : mAnimationClips)
-		//{
-		//	delete clip;
-		//	clip = nullptr;
-		//}
+		for (AnimationClip* clip : mAnimationClips)
+		{
+			delete clip;
+			clip = nullptr;
+		}
 	}
 }

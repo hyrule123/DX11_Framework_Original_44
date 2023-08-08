@@ -15,6 +15,7 @@ struct PS_OUT
 {
     float4 vDiffuse : SV_Target;
     float4 vSpecular : SV_Target1;
+    //float4 vEmssiive : SV_Target2;
 };
 
 		//albedo = Resources::Find<Texture>(L"PositionTarget");
@@ -50,7 +51,7 @@ PS_OUT main(VSOut _in)
     float SpecCoef = specularTarget.Sample(anisotropicSampler, vUV).x;
     float4 vSpec = decode(SpecCoef);
 
-    output.vDiffuse = lightcolor.diffuse + lightcolor.ambient;
+    output.vDiffuse = lightcolor.diffuse + lightcolor.ambient /*+ vEmssiive*/;
     output.vSpecular.xyz = lightcolor.specular.xyz; // * vSpec.xyz;
        
     output.vDiffuse.a = 1.f;

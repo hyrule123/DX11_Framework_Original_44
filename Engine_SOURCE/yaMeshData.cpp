@@ -13,7 +13,9 @@ namespace ya
 	}
 	MeshData::~MeshData()
 	{
+		int a = 0;
 	}
+
 	MeshData* MeshData::LoadFromFbx(const std::wstring& path)
 	{
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
@@ -45,11 +47,15 @@ namespace ya
 			materials.push_back(material);
 		}
 
-		MeshData* meshData = new MeshData();
+		std::shared_ptr<MeshData> meshData = std::make_shared<MeshData>();
 		meshData->mMesh = mesh;
 		meshData->mMaterials = materials;
 
-		return meshData;
+		const std::wstring meshDataName 
+			= std::filesystem::path(fullPath).stem();
+		Resources::Insert(meshDataName, meshData);
+
+		return meshData.get();
 	}
 
 	void MeshData::Save(const std::wstring& path)

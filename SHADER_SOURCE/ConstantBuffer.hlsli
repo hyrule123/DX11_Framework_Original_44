@@ -11,7 +11,7 @@ cbuffer MaterialData : register(b1)
 {
     uint usedAlbedo;
     uint usedNormal;
-    uint padd1;
+    uint usedSpecular;
     uint padd2;
 }
 
